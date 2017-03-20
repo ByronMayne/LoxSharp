@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Parser\Parser.cs" />
     <Compile Include="Scanning\KeywordGenerator.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
