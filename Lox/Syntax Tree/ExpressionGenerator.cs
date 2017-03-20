@@ -1,7 +1,7 @@
 ﻿ 
 namespace LoxLanguage
 {
-	public abstract class Expressions
+	public abstract class Expression
 	{
 		public interface IVisitor<T> 
 		{
@@ -11,13 +11,13 @@ namespace LoxLanguage
             T Visit(Unary unary);
 		}
  
-        public class Binary : Expressions
+        public class Binary : Expression
         {
-            public Expressions lhs;
+            public Expression lhs;
             public Token opp;
-            public Expressions rhs;
+            public Expression rhs;
              
-            public Binary(Expressions lhs, Token opp, Expressions rhs)
+            public Binary(Expression lhs, Token opp, Expression rhs)
             {
                 this.lhs = lhs;
                 this.opp = opp;
@@ -30,11 +30,11 @@ namespace LoxLanguage
             }
         }
 
-        public class Grouping : Expressions
+        public class Grouping : Expression
         {
-            public Expressions expression;
+            public Expression expression;
              
-            public Grouping(Expressions expression)
+            public Grouping(Expression expression)
             {
                 this.expression = expression;
             }
@@ -45,7 +45,7 @@ namespace LoxLanguage
             }
         }
 
-        public class Literal : Expressions
+        public class Literal : Expression
         {
             public object value;
              
@@ -60,12 +60,12 @@ namespace LoxLanguage
             }
         }
 
-        public class Unary : Expressions
+        public class Unary : Expression
         {
             public Token opp;
-            public Expressions rhs;
+            public Expression rhs;
              
-            public Unary(Token opp, Expressions rhs)
+            public Unary(Token opp, Expression rhs)
             {
                 this.opp = opp;
                 this.rhs = rhs;

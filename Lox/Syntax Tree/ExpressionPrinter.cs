@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace LoxLanguage
 {
-    public class ExpressionPrinter : Expressions.IVisitor<string>
+    public class ExpressionPrinter : Expression.IVisitor<string>
     {
-        public string Print(Expressions expression)
+        public string Print(Expression expression)
         {
             return expression.Accept(this);
         }
 
 
-        private string Parenthesize(string name, params Expressions[] expressions)
+        private string Parenthesize(string name, params Expression[] Expression)
         {
             StringBuilder builder = new StringBuilder();
 
             builder.Append("(").Append(name);
-            foreach(Expressions expr in expressions)
+            foreach(Expression expr in Expression)
             {
                 builder.Append(" ");
                 builder.Append(expr.Accept(this));
@@ -29,22 +29,22 @@ namespace LoxLanguage
         }
 
         // Visitors
-        string Expressions.IVisitor<string>.Visit(Expressions.Binary binary)
+        string Expression.IVisitor<string>.Visit(Expression.Binary binary)
         {
             return Parenthesize(binary.opp.lexeme, binary.lhs, binary.rhs);
         }
 
-        string Expressions.IVisitor<string>.Visit(Expressions.Grouping grouping)
+        string Expression.IVisitor<string>.Visit(Expression.Grouping grouping)
         {
             return Parenthesize("Group", grouping.expression);
         }
 
-        string Expressions.IVisitor<string>.Visit(Expressions.Literal literal)
+        string Expression.IVisitor<string>.Visit(Expression.Literal literal)
         {
             return literal.value.ToString();
         }
 
-        string Expressions.IVisitor<string>.Visit(Expressions.Unary unary)
+        string Expression.IVisitor<string>.Visit(Expression.Unary unary)
         {
             return Parenthesize(unary.opp.lexeme, unary.rhs);
         }

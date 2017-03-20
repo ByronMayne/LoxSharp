@@ -9,7 +9,7 @@
 <#@ import namespace="System.Collections" #>
 <#@ import namespace="System.Collections.Generic" #> 
 <#
-	string BASE_TYPE = "Expressions";
+	string BASE_TYPE = "Expression";
 	string TOKEN_TYPE = "Token";
 	string OBJECT_TYPE = "object";
 	string INDENT = "    ";
