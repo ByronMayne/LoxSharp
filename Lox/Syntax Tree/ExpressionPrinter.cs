@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LoxLanguage
 {
-    public class ExpressionPrinter : Expressions.Visitor<string>
+    public class ExpressionPrinter : Expressions.IVisitor<string>
     {
         public string Print(Expressions expression)
         {
@@ -29,22 +29,22 @@ namespace LoxLanguage
         }
 
         // Visitors
-        string Expressions.Visitor<string>.Visit(Expressions.Binary binary)
+        string Expressions.IVisitor<string>.Visit(Expressions.Binary binary)
         {
             return Parenthesize(binary.opp.lexeme, binary.lhs, binary.rhs);
         }
 
-        string Expressions.Visitor<string>.Visit(Expressions.Grouping grouping)
+        string Expressions.IVisitor<string>.Visit(Expressions.Grouping grouping)
         {
             return Parenthesize("Group", grouping.expression);
         }
 
-        string Expressions.Visitor<string>.Visit(Expressions.Literal literal)
+        string Expressions.IVisitor<string>.Visit(Expressions.Literal literal)
         {
             return literal.value.ToString();
         }
 
-        string Expressions.Visitor<string>.Visit(Expressions.Unary unary)
+        string Expressions.IVisitor<string>.Visit(Expressions.Unary unary)
         {
             return Parenthesize(unary.opp.lexeme, unary.rhs);
         }

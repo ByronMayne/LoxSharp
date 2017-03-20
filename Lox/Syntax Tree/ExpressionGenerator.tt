@@ -26,7 +26,7 @@ namespace LoxLanguage
 {
 	public abstract class <#= BASE_TYPE #>
 	{
-		public interface Visitor<T> 
+		public interface IVisitor<T> 
 		{
 <#		
 		PushIndent(INDENT + INDENT);
@@ -111,7 +111,7 @@ namespace LoxLanguage
 						
 				// Visit Function
 				WriteLine(" ");
-				WriteLine("public override T Accept<T>(Visitor<T> visitor)");
+				WriteLine("public override T Accept<T>(IVisitor<T> visitor)");
 				WriteLine("{");
 				PushIndent(INDENT);
                 {
@@ -137,7 +137,7 @@ namespace LoxLanguage
 		/// <summary>
 		/// Base function for visiting our trees.
 		/// </summary> 
-		public abstract T Accept<T>(Visitor<T> visitor);
+		public abstract T Accept<T>(IVisitor<T> visitor);
 	}
 }
 

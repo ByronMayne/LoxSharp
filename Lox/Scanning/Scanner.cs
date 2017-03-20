@@ -63,6 +63,8 @@ namespace LoxLanguage
                 case ')': AddToken(TokenType.RightParen); break;
                 case '{': AddToken(TokenType.LeftBrace); break;
                 case '}': AddToken(TokenType.RightBrace); break;
+                case '[': AddToken(TokenType.LeftBracket); break;
+                case ']': AddToken(TokenType.RightBracket); break;
                 // Syntax
                 case ',': AddToken(TokenType.Comma); break;
                 case '.': AddToken(TokenType.Dot); break;
@@ -206,6 +208,8 @@ namespace LoxLanguage
             }
             AddToken(type);
         }
+
+
 
         /// <summary>
         /// Reads  text in a in our source until we reach the end

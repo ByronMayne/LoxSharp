@@ -43,11 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Scanning\KeywordGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KeywordGenerator.tt</DependentUpon>
+    </Compile>
     <Compile Include="Syntax Tree\ExpressionPrinter.cs" />
     <Compile Include="Debug.cs" />
     <Compile Include="IErrorHandler.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Scanning\Keywords.cs" />
     <Compile Include="Scanning\Scanner.cs" />
     <Compile Include="Scanning\Token.cs" />
     <Compile Include="Scanning\TokenTypes.cs" />
@@ -61,8 +65,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scanning\KeywordGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>KeywordGenerator.cs</LastGenOutput>
+    </Content>
     <Content Include="Syntax Tree\ExpressionGenerator.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ExpressionGenerator.cs</LastGenOutput>

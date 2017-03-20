@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LoxLanguage
@@ -36,14 +37,25 @@ namespace LoxLanguage
             {
                 // Write the input mark
                 Console.Write(">");
+                ConsoleKeyInfo keyInfo = new ConsoleKeyInfo();
 
-                if (!Console.KeyAvailable)
+
+                while (keyInfo.Key != ConsoleKey.Enter)
                 {
-                    // Read the input
-                    string voxCode = Console.ReadLine();
-                    // Run it
-                    Execute(voxCode);
+
+                    if (Console.KeyAvailable)
+                    {
+                        // Get our current key
+                        keyInfo = Console.ReadKey();
+                    }
                 }
+
+                Console.WriteLine();
+
+                // Read the input
+                //string voxCode = Console.ReadLine();
+                // Run it
+                //Execute(voxCode);
 
             } while (!ShouldEscape());
         }
@@ -88,7 +100,7 @@ namespace LoxLanguage
             // create a list of tokens
             List<Token> tokens = scanner.ScanTokens();
             // print them all
-            for(int i = 0; i < tokens.Count; i++)
+            for (int i = 0; i < tokens.Count; i++)
             {
                 Debug.Log(tokens[i].ToString());
             }

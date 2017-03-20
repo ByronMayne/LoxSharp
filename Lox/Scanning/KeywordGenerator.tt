@@ -1,0 +1,72 @@
+﻿<#@ template  debug="true" hostSpecific="true" #>
+<#@ output extension=".cs" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Windows.Forms" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #> 
+<#
+	string[] KEYWORDS = new string[]
+		{
+			"And",
+			"Class",
+			"Else",
+			"False",
+			"For",
+			"Fun",
+			"If",
+			"Nil",
+			"Or",
+			"Print",
+			"Return",
+			"Super",
+			"This",
+			"Var",
+			"While"
+        };
+
+#>
+using System;
+using System.Collections.Generic;
+
+namespace LoxLanguage
+{
+	public static class Keywords
+	{
+		private static readonly Dictionary<string, TokenType> MAP;
+
+<# foreach(string keyword in KEYWORDS) { #>
+		public const string <#= keyword.ToUpper() #> = "<#= keyword.ToLower() #>";
+<#}#>
+
+
+		/// <summary>
+		/// Initializes our Map.
+		/// </summary>
+		static Keywords()
+		{
+			MAP = new Dictionary<string, TokenType>();
+<#  foreach(string keyword in KEYWORDS) 
+	{
+#>			MAP[<#= keyword.ToUpper() #>] = TokenType.<#=keyword#>;
+<#}#>
+		}
+
+		/// <summary>
+		/// Gets our keyword from our map.
+		/// </summary>
+		/// <param name="text"></param>
+		/// <returns></returns>
+		public static TokenType Get(string key)
+		{
+			if(MAP.ContainsKey(key))
+			{
+				return MAP[key];
+			}
+			return TokenType.Undefined;
+		}
+	}
+}

@@ -3,7 +3,7 @@ namespace LoxLanguage
 {
 	public abstract class Expressions
 	{
-		public interface Visitor<T> 
+		public interface IVisitor<T> 
 		{
             T Visit(Binary binary);
             T Visit(Grouping grouping);
@@ -24,7 +24,7 @@ namespace LoxLanguage
                 this.rhs = rhs;
             }
              
-            public override T Accept<T>(Visitor<T> visitor)
+            public override T Accept<T>(IVisitor<T> visitor)
             {
                 return visitor.Visit(this);
             }
@@ -39,7 +39,7 @@ namespace LoxLanguage
                 this.expression = expression;
             }
              
-            public override T Accept<T>(Visitor<T> visitor)
+            public override T Accept<T>(IVisitor<T> visitor)
             {
                 return visitor.Visit(this);
             }
@@ -54,7 +54,7 @@ namespace LoxLanguage
                 this.value = value;
             }
              
-            public override T Accept<T>(Visitor<T> visitor)
+            public override T Accept<T>(IVisitor<T> visitor)
             {
                 return visitor.Visit(this);
             }
@@ -71,7 +71,7 @@ namespace LoxLanguage
                 this.rhs = rhs;
             }
              
-            public override T Accept<T>(Visitor<T> visitor)
+            public override T Accept<T>(IVisitor<T> visitor)
             {
                 return visitor.Visit(this);
             }
@@ -80,7 +80,7 @@ namespace LoxLanguage
 		/// <summary>
 		/// Base function for visiting our trees.
 		/// </summary> 
-		public abstract T Accept<T>(Visitor<T> visitor);
+		public abstract T Accept<T>(IVisitor<T> visitor);
 	}
 }
 
