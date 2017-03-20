@@ -205,5 +205,33 @@ namespace LoxLanguage.Parser
             m_ErrorHandler.Error(token, message);
             return new ParserException();
         }
+
+        private void Synchronize()
+        {
+            Advance();
+
+            while(!IsAtEnd())
+            {
+                if(Previous().type == TokenType.Semicolon)
+                {
+                    return;
+                }
+
+                switch(Peek().type)
+                {
+                    case TokenType.Class:
+                    case TokenType.Fun:
+                    case TokenType.Var:
+                    case TokenType.For:
+                    case TokenType.If:
+                    case TokenType.While:
+                    case TokenType.Print:
+                    case TokenType.Return:
+                        return;
+                }
+
+                Advance();
+            }
+        }
     }
 }
