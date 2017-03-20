@@ -111,5 +111,18 @@ namespace LoxLanguage
             m_HadError = true;
             Debug.LogError("Line:{0} {1}", line, message);
         }
+
+        public void Error(Token token, string message)
+        {
+            m_HadError = true;
+            if (token.type == TokenType.EOF)
+            {
+                Report(token.line, " at end", message);
+            }
+            else
+            {
+                Report(token.line, " at '" + token.lexeme + "'", message);
+            }
+        }
     }
 }

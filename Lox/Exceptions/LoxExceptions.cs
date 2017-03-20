@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace LoxLanguage
 {
-    public interface IErrorHandler
+    public abstract class LoxExceptions : Exception
     {
-        void Error(int line, string message);
-        void Error(Token token, string message);
+    }
+
+    public class ParserException : LoxExceptions
+    {
     }
 }

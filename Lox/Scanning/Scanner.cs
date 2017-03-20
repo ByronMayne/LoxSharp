@@ -6,7 +6,7 @@ using System.Text;
 namespace LoxLanguage
 {
     public class Scanner
-    {
+  {
         private List<Token> m_Tokens;
         private string m_Source;
         private int m_Start;
