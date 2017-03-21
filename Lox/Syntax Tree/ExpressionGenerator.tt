@@ -18,7 +18,8 @@
 		new Exp("Binary", new Arg(BASE_TYPE, "lhs"),  new Arg(TOKEN_TYPE, "opp"),  new Arg(BASE_TYPE, "rhs")),
 		new Exp("Grouping", new Arg(BASE_TYPE, "expression")),
 		new Exp("Literal", new Arg(OBJECT_TYPE, "value")),
-		new Exp("Unary", new Arg(TOKEN_TYPE, "opp"), new Arg(BASE_TYPE, "rhs"))
+		new Exp("Prefix", new Arg(TOKEN_TYPE, "opp"), new Arg(BASE_TYPE, "rhs")),
+		new Exp("Postfix", new Arg(TOKEN_TYPE, "opp"), new Arg(BASE_TYPE, "lhs"))
     };
 
 #>

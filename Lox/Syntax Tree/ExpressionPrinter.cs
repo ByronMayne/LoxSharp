@@ -44,9 +44,14 @@ namespace LoxLanguage
             return literal.value.ToString();
         }
 
-        string Expression.IVisitor<string>.Visit(Expression.Unary unary)
+        string Expression.IVisitor<string>.Visit(Expression.Prefix prefix)
         {
-            return Parenthesize(unary.opp.lexeme, unary.rhs);
+            return Parenthesize(prefix.opp.lexeme, prefix.rhs);
+        }
+
+        string Expression.IVisitor<string>.Visit(Expression.Postfix postfix)
+        {
+            return Parenthesize(postfix.opp.lexeme, postfix.lhs);
         }
     }
 }

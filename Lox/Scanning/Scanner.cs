@@ -69,8 +69,8 @@ namespace LoxLanguage
                 case ',': AddToken(TokenType.Comma); break;
                 case '.': AddToken(TokenType.Dot); break;
                 // Math
-                case '-': AddToken(TokenType.Minus); break;
-                case '+': AddToken(TokenType.Plus); break;
+                case '-': AddToken(Match('-') ? TokenType.MinusMinus : TokenType.Minus); break;
+                case '+': AddToken(Match('+') ? TokenType.PlusPlus : TokenType.Plus); break;
                 case ';': AddToken(TokenType.Semicolon); break;
                 case '*': AddToken(TokenType.Star); break;
                 case '!': AddToken(Match('=') ? TokenType.BangEqual : TokenType.Bang); break;

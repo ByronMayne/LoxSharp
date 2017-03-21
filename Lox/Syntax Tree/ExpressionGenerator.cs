@@ -8,7 +8,8 @@ namespace LoxLanguage
             T Visit(Binary binary);
             T Visit(Grouping grouping);
             T Visit(Literal literal);
-            T Visit(Unary unary);
+            T Visit(Prefix prefix);
+            T Visit(Postfix postfix);
 		}
  
         public class Binary : Expression
@@ -60,15 +61,32 @@ namespace LoxLanguage
             }
         }
 
-        public class Unary : Expression
+        public class Prefix : Expression
         {
             public Token opp;
             public Expression rhs;
              
-            public Unary(Token opp, Expression rhs)
+            public Prefix(Token opp, Expression rhs)
             {
                 this.opp = opp;
                 this.rhs = rhs;
+            }
+             
+            public override T Accept<T>(IVisitor<T> visitor)
+            {
+                return visitor.Visit(this);
+            }
+        }
+
+        public class Postfix : Expression
+        {
+            public Token opp;
+            public Expression lhs;
+             
+            public Postfix(Token opp, Expression lhs)
+            {
+                this.opp = opp;
+                this.lhs = lhs;
             }
              
             public override T Accept<T>(IVisitor<T> visitor)

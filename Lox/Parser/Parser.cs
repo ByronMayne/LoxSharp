@@ -178,13 +178,24 @@ namespace LoxLanguage
 
         private Expression Unary()
         {
-            if (Match(TokenType.Bang, TokenType.Minus))
+            if (Match(TokenType.Bang, TokenType.Minus, TokenType.MinusMinus, TokenType.PlusPlus))
             {
                 Token @operator = Previous();
                 Expression right = Unary();
-                return new Expression.Unary(@operator, right);
+                return new Expression.Prefix(@operator, right);
             }
-            return Primary();
+            return Postfix();
+        }
+
+        private Expression Postfix()
+        {
+            Expression expression = Primary();
+
+            while(Match(TokenType.MinusMinus, TokenType.PlusPlus))
+            {
+                expression = new Expression.Postfix(Previous(), expression);
+            }
+            return expression;
         }
 
         private Expression Primary()

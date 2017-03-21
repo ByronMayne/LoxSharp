@@ -68,6 +68,14 @@
        /// <= 
        /// </summary>
        LessEqual,
+       /// <summary>
+       /// ++
+       /// </summary>
+       PlusPlus,
+       /// <summary>
+       /// --
+       /// </summary>
+       MinusMinus,
 
        // Literals
        Identifier,
