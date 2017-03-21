@@ -37,25 +37,10 @@ namespace LoxLanguage
             {
                 // Write the input mark
                 Console.Write(">");
-                ConsoleKeyInfo keyInfo = new ConsoleKeyInfo();
-
-
-                while (keyInfo.Key != ConsoleKey.Enter)
-                {
-
-                    if (Console.KeyAvailable)
-                    {
-                        // Get our current key
-                        keyInfo = Console.ReadKey();
-                    }
-                }
-
-                Console.WriteLine();
-
                 // Read the input
-                //string voxCode = Console.ReadLine();
+                string voxCode = Console.ReadLine();
                 // Run it
-                //Execute(voxCode);
+                Execute(voxCode);
 
             } while (!ShouldEscape());
         }
@@ -99,10 +84,14 @@ namespace LoxLanguage
             Scanner scanner = new Scanner(voxSource, this);
             // create a list of tokens
             List<Token> tokens = scanner.ScanTokens();
-            // print them all
-            for (int i = 0; i < tokens.Count; i++)
+            // Create our parser
+            Parser parser = new Parser(tokens, this);
+            // Start the parse process.
+            Expression expression = parser.Parse();
+
+           if(!m_HadError)
             {
-                Debug.Log(tokens[i].ToString());
+                Debug.Log(new ExpressionPrinter().Print(expression));
             }
         }
 

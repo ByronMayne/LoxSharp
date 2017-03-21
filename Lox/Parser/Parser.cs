@@ -11,7 +11,8 @@ namespace LoxLanguage
         private IErrorHandler m_ErrorHandler;
 
         /// <summary>
-        /// Creates a new instance of our parser.
+        /// Creates a new instance of our parser. The <see cref="IErrorHandler"/> was
+        /// added by me to handle errors.
         /// </summary>
         /// <param name="tokens"></param>
         public Parser(IList<Token> tokens, IErrorHandler errorHanlder)
@@ -19,6 +20,22 @@ namespace LoxLanguage
             m_ErrorHandler = errorHanlder;
             m_Tokens = tokens;
             m_Current = 0;
+        }
+
+        /// <summary>
+        /// Starts the parsing processes for our list of tokens. 
+        /// </summary>
+        /// <returns></returns>
+        public Expression Parse()
+        {
+            try
+            {
+                return Expression();
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         private Expression Expression()
@@ -188,7 +205,7 @@ namespace LoxLanguage
                 return new Expression.Grouping(expression);
             }
 
-            return null;
+            throw Error(Peek(), "Expected expression.");
         }
 
         private Token Consume(TokenType type, string message)
