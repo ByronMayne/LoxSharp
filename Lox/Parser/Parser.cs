@@ -49,7 +49,7 @@ namespace LoxLanguage
 
             if (Match(TokenType.Question))
             {
-                 Expression thenBranch = Expression();
+                Expression thenBranch = Expression();
                 Consume(TokenType.Colon, "Expect ':' after then branch of conditional expression.");
                 Expression elseBranch = Conditional();
                 expression = new Expression.Conditional(expression, thenBranch, elseBranch);
@@ -228,6 +228,35 @@ namespace LoxLanguage
                 Expression expression = Expression();
                 Consume(TokenType.RightParen, "Expect ')' after expression.");
                 return new Expression.Grouping(expression);
+            }
+
+            // Error productions
+            if (Match(TokenType.BangEqual, TokenType.EqualEqual))
+            {
+                Error(Previous(), "Missing left-hand operand.");
+                Equality();
+                return null;
+            }
+
+            if (Match(TokenType.Greater, TokenType.GreaterEqual, TokenType.Less, TokenType.LessEqual))
+            {
+                Error(Previous(), "Missing left-hand operand.");
+                Comparison();
+                return null;
+            }
+
+            if (Match(TokenType.Plus))
+            {
+                Error(Previous(), "Missing left-hand operand.");
+                Term();
+                return null;
+            }
+
+            if(Match(TokenType.Slash, TokenType.Star))
+            {
+                Error(Previous(), "Missing left-hand operand.");
+                Factor();
+                return null;
             }
 
             throw Error(Peek(), "Expected expression.");
