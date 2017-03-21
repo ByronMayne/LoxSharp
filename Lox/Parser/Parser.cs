@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System;
 
-namespace LoxLanguage.Parser
+namespace LoxLanguage
 {
     public class Parser
     {
@@ -63,9 +63,9 @@ namespace LoxLanguage.Parser
         /// </summary>
         private bool Check(TokenType tokenType)
         {
-            if (!IsAtEnd())
+            if (IsAtEnd())
             {
-                m_Current++;
+                return false;
             }
             return Peek().type == tokenType;
         }
@@ -147,7 +147,7 @@ namespace LoxLanguage.Parser
 
         private Expression Factor()
         {
-            Expression expression = Factor();
+            Expression expression = Unary();
 
             while (Match(TokenType.Slash, TokenType.Star))
             {
