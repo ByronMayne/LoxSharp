@@ -19,7 +19,8 @@
 		new Exp("Grouping", new Arg(BASE_TYPE, "expression")),
 		new Exp("Literal", new Arg(OBJECT_TYPE, "value")),
 		new Exp("Prefix", new Arg(TOKEN_TYPE, "opp"), new Arg(BASE_TYPE, "rhs")),
-		new Exp("Postfix", new Arg(TOKEN_TYPE, "opp"), new Arg(BASE_TYPE, "lhs"))
+		new Exp("Postfix", new Arg(TOKEN_TYPE, "opp"), new Arg(BASE_TYPE, "lhs")),
+		new Exp("Conditional", new Arg(BASE_TYPE, "expression"), new Arg(BASE_TYPE, "thenBranch"), new Arg(BASE_TYPE, "elseBranch"))
     };
 
 #>

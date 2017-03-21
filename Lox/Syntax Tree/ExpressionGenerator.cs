@@ -10,6 +10,7 @@ namespace LoxLanguage
             T Visit(Literal literal);
             T Visit(Prefix prefix);
             T Visit(Postfix postfix);
+            T Visit(Conditional conditional);
 		}
  
         public class Binary : Expression
@@ -87,6 +88,25 @@ namespace LoxLanguage
             {
                 this.opp = opp;
                 this.lhs = lhs;
+            }
+             
+            public override T Accept<T>(IVisitor<T> visitor)
+            {
+                return visitor.Visit(this);
+            }
+        }
+
+        public class Conditional : Expression
+        {
+            public Expression expression;
+            public Expression thenBranch;
+            public Expression elseBranch;
+             
+            public Conditional(Expression expression, Expression thenBranch, Expression elseBranch)
+            {
+                this.expression = expression;
+                this.thenBranch = thenBranch;
+                this.elseBranch = elseBranch;
             }
              
             public override T Accept<T>(IVisitor<T> visitor)

@@ -53,5 +53,9 @@ namespace LoxLanguage
         {
             return Parenthesize(postfix.opp.lexeme, postfix.lhs);
         }
+        string Expression.IVisitor<string>.Visit(Expression.Conditional conditional)
+        {
+            return Parenthesize("Conditional", conditional.thenBranch, conditional.elseBranch);
+        }
     }
 }

@@ -40,7 +40,21 @@ namespace LoxLanguage
 
         private Expression Expression()
         {
-            return Equality();
+            return Conditional();
+        }
+
+        private Expression Conditional()
+        {
+            Expression expression = Equality();
+
+            if (Match(TokenType.Question))
+            {
+                 Expression thenBranch = Expression();
+                Consume(TokenType.Colon, "Expect ':' after then branch of conditional expression.");
+                Expression elseBranch = Conditional();
+                expression = new Expression.Conditional(expression, thenBranch, elseBranch);
+            }
+            return expression;
         }
 
         public Expression Equality()
@@ -191,7 +205,7 @@ namespace LoxLanguage
         {
             Expression expression = Primary();
 
-            while(Match(TokenType.MinusMinus, TokenType.PlusPlus))
+            while (Match(TokenType.MinusMinus, TokenType.PlusPlus))
             {
                 expression = new Expression.Postfix(Previous(), expression);
             }
@@ -238,14 +252,14 @@ namespace LoxLanguage
         {
             Advance();
 
-            while(!IsAtEnd())
+            while (!IsAtEnd())
             {
-                if(Previous().type == TokenType.Semicolon)
+                if (Previous().type == TokenType.Semicolon)
                 {
                     return;
                 }
 
-                switch(Peek().type)
+                switch (Peek().type)
                 {
                     case TokenType.Class:
                     case TokenType.Fun:

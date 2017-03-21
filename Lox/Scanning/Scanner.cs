@@ -68,6 +68,8 @@ namespace LoxLanguage
                 // Syntax
                 case ',': AddToken(TokenType.Comma); break;
                 case '.': AddToken(TokenType.Dot); break;
+                case '?': AddToken(TokenType.Question); break;
+                case ':': AddToken(TokenType.Colon); break;
                 // Math
                 case '-': AddToken(Match('-') ? TokenType.MinusMinus : TokenType.Minus); break;
                 case '+': AddToken(Match('+') ? TokenType.PlusPlus : TokenType.Plus); break;

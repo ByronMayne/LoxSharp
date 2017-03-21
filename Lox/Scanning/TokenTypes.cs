@@ -76,6 +76,14 @@
        /// --
        /// </summary>
        MinusMinus,
+       /// <summary>
+       /// ?
+       /// </summary>
+       Question,
+       /// <summary>
+       /// :
+       /// </summary>
+       Colon,
 
        // Literals
        Identifier,
