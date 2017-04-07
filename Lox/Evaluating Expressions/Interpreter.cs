@@ -7,7 +7,7 @@ namespace LoxLanguage
     {
         public object Visit(Literal literal)
         {
-            throw new NotImplementedException();
+            return literal.value;
         }
 
         public object Visit(Postfix postfix)
