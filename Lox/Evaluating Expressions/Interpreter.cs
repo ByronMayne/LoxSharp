@@ -27,12 +27,17 @@ namespace LoxLanguage
 
         public object Visit(Grouping grouping)
         {
-            throw new NotImplementedException();
+            return Evaluate(grouping.expression);
         }
 
         public object Visit(Binary binary)
         {
             throw new NotImplementedException();
+        }
+
+        private object Evaluate(Expression expression)
+        {
+            return expression.Accept(this);
         }
     }
 }
