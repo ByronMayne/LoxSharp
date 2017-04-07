@@ -71,6 +71,7 @@ namespace LoxLanguage
                 case '?': AddToken(TokenType.Question); break;
                 case ':': AddToken(TokenType.Colon); break;
                 // Math
+                case '%': AddToken(TokenType.Modulus); break;
                 case '-': AddToken(Match('-') ? TokenType.MinusMinus : TokenType.Minus); break;
                 case '+': AddToken(Match('+') ? TokenType.PlusPlus : TokenType.Plus); break;
                 case ';': AddToken(TokenType.Semicolon); break;

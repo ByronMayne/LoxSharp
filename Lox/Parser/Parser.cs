@@ -180,7 +180,7 @@ namespace LoxLanguage
         {
             Expression expression = Unary();
 
-            while (Match(TokenType.Slash, TokenType.Star))
+            while (Match(TokenType.Slash, TokenType.Star, TokenType.Modulus))
             {
                 Token @operator = Previous();
                 Expression right = Unary();
@@ -252,7 +252,7 @@ namespace LoxLanguage
                 return null;
             }
 
-            if(Match(TokenType.Slash, TokenType.Star))
+            if(Match(TokenType.Slash, TokenType.Star, TokenType.Modulus))
             {
                 Error(Previous(), "Missing left-hand operand.");
                 Factor();

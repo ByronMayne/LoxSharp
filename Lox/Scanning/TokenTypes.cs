@@ -85,6 +85,11 @@
        /// </summary>
        Colon,
 
+       /// <summary>
+       /// %
+       /// </summary>
+       Modulus,
+
        // Literals
        Identifier,
        String, 

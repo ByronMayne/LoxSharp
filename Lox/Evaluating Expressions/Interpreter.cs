@@ -116,6 +116,9 @@ namespace LoxLanguage
                     // Not valid addition type. 
                    new RuntimeError(binary.opp, "Operands must be two numbers or two strings.");
                 break;
+                case TokenType.Modulus:
+                    ValidateNumberOperand(binary.opp, left, right);
+                    return (double)left % (double)right;
                 case TokenType.Slash:
                     ValidateNumberOperand(binary.opp, left, right);
                     ValidateDivision(binary.opp, right);
