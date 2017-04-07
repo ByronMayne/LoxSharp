@@ -12,6 +12,7 @@ namespace LoxLanguage
     {
         private string[] m_Arguements;
         private bool m_HadError;
+        private bool m_HasRuntimeError;
 
         public Lox(string[] args)
         {
@@ -28,7 +29,17 @@ namespace LoxLanguage
             {
                 RunPrompt();
             }
-            return m_HadError ? 60 : 0;
+
+            if(m_HadError)
+            {
+                return 60;
+            }
+
+            if(m_HasRuntimeError)
+            {
+                return 70;
+            }
+            return 0;
         }
 
         private void RunPrompt()
@@ -114,9 +125,13 @@ namespace LoxLanguage
             }
         }
 
+        /// <summary>
+        /// Invoked when we get a runtime error while running the interpreter
+        /// </summary>
         public void RuntimeError(RuntimeError error)
         {
-
+            Debug.LogError(error.Message + "\n[line " + error.token.line + "]");
+            m_HasRuntimeError = true;
         }
     }
 }
