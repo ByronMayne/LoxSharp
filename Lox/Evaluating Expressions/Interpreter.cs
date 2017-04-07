@@ -111,9 +111,9 @@ namespace LoxLanguage
                     {
                         return (double)left + (double)right;
                     }
-                    else if (left is string && right is string)
+                    else if (left is string)
                     {
-                        return (string)left + (string)right;
+                        return (string)left + Stringify(right);
                     }
                     // Not valid addition type. 
                     m_ErrorHandler.RuntimeError(new RuntimeError(binary.opp, "Operands must be two numbers or two strings."));
