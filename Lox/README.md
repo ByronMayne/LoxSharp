@@ -1,5 +1,5 @@
 # LoxSharp
-### Current Chapter 5 Representing Code
+### Completed Chapter 7 Evaluating Expressions
 The C# implementation of the Lox Tutorials written by @munificentbob found at http://www.craftinginterpreters.com/
 
 ### Notes
