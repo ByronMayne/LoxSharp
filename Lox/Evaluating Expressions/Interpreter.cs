@@ -34,7 +34,18 @@ namespace LoxLanguage
 
         public object Visit(Postfix postfix)
         {
-            throw new NotImplementedException();
+            object right = Evaluate(postfix.lhs);
+            ValidateNumberOperand(postfix.opp, right);
+            switch (postfix.opp.type)
+            {
+                case TokenType.MinusMinus:
+                    return (double)right - 1;
+                case TokenType.PlusPlus:
+                    return (double)right + 1;
+            }
+
+            // Unreachable
+            return null;
         }
 
         public object Visit(Conditional conditional)
@@ -53,6 +64,12 @@ namespace LoxLanguage
                 case TokenType.Minus:
                     ValidateNumberOperand(prefix.opp, right); 
                     return -(double)right;
+                case TokenType.MinusMinus:
+                    ValidateNumberOperand(prefix.opp, right);
+                    return (double)right - 1;
+                case TokenType.PlusPlus:
+                    ValidateNumberOperand(prefix.opp, right);
+                    return (double)right + 1;
             }
 
             // Unreachable
