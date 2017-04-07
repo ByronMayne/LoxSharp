@@ -18,7 +18,7 @@ namespace LoxLanguage
         public Lox(string[] args)
         {
             m_Arguements = args;
-            m_Interpreter = new Interpreter();
+            m_Interpreter = new Interpreter(this);
         }
 
         public int Run()
@@ -129,7 +129,8 @@ namespace LoxLanguage
         /// </summary>
         public void RuntimeError(RuntimeError error)
         {
-            Debug.LogError(error.Message + "\n[line " + error.token.line + "]");
+            Debug.LogError(error.Message);
+            Debug.LogError("[line " + error.token.line + "]");
             m_HasRuntimeError = true;
         }
     }

@@ -99,7 +99,8 @@ namespace LoxLanguage
                         return (string)left + (string)right;
                     }
                     // Not valid addition type. 
-                    return new RuntimeError(binary.opp, "Operands must be two numbers or two strings.");
+                    m_ErrorHandler.RuntimeError(new RuntimeError(binary.opp, "Operands must be two numbers or two strings."));
+                break;
                 case TokenType.Slash:
                     ValidateNumberOperand(binary.opp, left, right);
                     return (double)left / (double)right;

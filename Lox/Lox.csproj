@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Evaluating Expressions\Interpreter.cs" />
     <Compile Include="Exceptions\LoxExceptions.cs" />
     <Compile Include="Parser\Parser.cs" />
     <Compile Include="Scanning\KeywordGenerator.cs">
