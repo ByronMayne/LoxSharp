@@ -29,12 +29,14 @@ namespace LoxLanguage
                 case TokenType.Bang:
                     return !IsTrue(right);
                 case TokenType.Minus:
+                    ValidateNumberOperand(prefix.opp, right); 
                     return -(double)right;
             }
 
             // Unreachable
             return null;
         }
+
 
 
         public object Visit(Grouping grouping)
@@ -51,14 +53,19 @@ namespace LoxLanguage
             switch (binary.opp.type)
             {
                 case TokenType.Greater:
+                    ValidateNumberOperand(binary.opp, left, right);
                     return (double)left > (double)right;
                 case TokenType.GreaterEqual:
+                    ValidateNumberOperand(binary.opp, left, right);
                     return (double)left >= (double)right;
                 case TokenType.Less:
+                    ValidateNumberOperand(binary.opp, left, right);
                     return (double)left < (double)right;
                 case TokenType.LessEqual:
+                    ValidateNumberOperand(binary.opp, left, right);
                     return (double)left <= (double)right;
                 case TokenType.Minus:
+                    ValidateNumberOperand(binary.opp, left, right);
                     return (double)left - (double)right;
                 case TokenType.Plus:
                     if (left is double && right is double)
@@ -70,10 +77,12 @@ namespace LoxLanguage
                         return (string)left + (string)right;
                     }
                     // Not valid addition type. 
-                    break;
+                    return new RuntimeError(binary.opp, "Operands must be two numbers or two strings.");
                 case TokenType.Slash:
+                    ValidateNumberOperand(binary.opp, left, right);
                     return (double)left / (double)right;
                 case TokenType.Star:
+                    ValidateNumberOperand(binary.opp, left, right);
                     return (double)left * (double)right;
                 case TokenType.BangEqual:
                     return !IsEqual(left, right);
@@ -100,9 +109,9 @@ namespace LoxLanguage
         /// <summary>
         /// Takes two objects and checks if they are equal.
         /// </summary>
-        private bool IsEqual(object left, object right)
+        private bool IsEqual(object a, object b)
         {
-
+            return Equals(a, b);
         }
 
         /// <summary>
@@ -112,5 +121,26 @@ namespace LoxLanguage
         {
             return expression.Accept(this);
         }
+
+        /// <summary>
+        /// Validates that a token and a value are both a number
+        /// operand;
+        /// </summary>
+        private void ValidateNumberOperand(Token operand, object right)
+        {
+            if (right is double) return;
+            throw new RuntimeError(operand, "Operand must be a number");
+        }
+
+        /// <summary>
+        /// Validates that a token and a value are both a number
+        /// operand;
+        /// </summary>
+        private void ValidateNumberOperand(Token operand, object right, object left)
+        {
+            if (right is double && left is double) return;
+            throw new RuntimeError(operand, "Operands must be a number");
+        }
+
     }
 }
