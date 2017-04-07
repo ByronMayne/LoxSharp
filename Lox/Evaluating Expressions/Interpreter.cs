@@ -25,8 +25,6 @@ namespace LoxLanguage
             }
         }
 
-
-
         public object Visit(Literal literal)
         {
             return literal.value;
@@ -116,10 +114,11 @@ namespace LoxLanguage
                         return (string)left + Stringify(right);
                     }
                     // Not valid addition type. 
-                    m_ErrorHandler.RuntimeError(new RuntimeError(binary.opp, "Operands must be two numbers or two strings."));
+                   new RuntimeError(binary.opp, "Operands must be two numbers or two strings.");
                 break;
                 case TokenType.Slash:
                     ValidateNumberOperand(binary.opp, left, right);
+                    ValidateDivision(binary.opp, right);
                     return (double)left / (double)right;
                 case TokenType.Star:
                     ValidateNumberOperand(binary.opp, left, right);
@@ -180,6 +179,18 @@ namespace LoxLanguage
         {
             if (right is double && left is double) return;
             throw new RuntimeError(operand, "Operands must be a number");
+        }
+
+        /// <summary>
+        /// Checks to see if we are dividing by zero and if we are it throws
+        /// and exception. 
+        /// </summary>
+        private void ValidateDivision(Token operand, object value)
+        {
+            if((double)value == 0)
+            {
+                throw new RuntimeError(operand, "Divided by zero");
+            }
         }
 
         /// <summary>
