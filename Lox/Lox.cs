@@ -13,10 +13,12 @@ namespace LoxLanguage
         private string[] m_Arguements;
         private bool m_HadError;
         private bool m_HasRuntimeError;
+        private Interpreter m_Interpreter; 
 
         public Lox(string[] args)
         {
             m_Arguements = args;
+            m_Interpreter = new Interpreter();
         }
 
         public int Run()
@@ -99,11 +101,8 @@ namespace LoxLanguage
             Parser parser = new Parser(tokens, this);
             // Start the parse process.
             Expression expression = parser.Parse();
-
-           if(!m_HadError)
-            {
-                Debug.Log(new ExpressionPrinter().Print(expression));
-            }
+            // Start our interpreter
+            m_Interpreter.Interpret(expression); 
         }
 
         public void Error(int line, string message)
