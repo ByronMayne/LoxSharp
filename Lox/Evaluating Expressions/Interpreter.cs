@@ -5,6 +5,28 @@ namespace LoxLanguage
 {
     public class Interpreter : IVisitor<object>
     {
+        private IErrorHandler m_ErrorHandler; 
+
+        public Interpreter(IErrorHandler errorHandler)
+        {
+            m_ErrorHandler = errorHandler;
+        }
+
+        public void Interpret(Expression expresssion)
+        {
+            try
+            {
+                object value = Evaluate(expresssion);
+                Console.WriteLine(Stringify(value));
+            }
+            catch( RuntimeError error)
+            {
+                m_ErrorHandler.RuntimeError(error);
+            }
+        }
+
+
+
         public object Visit(Literal literal)
         {
             return literal.value;
@@ -142,5 +164,14 @@ namespace LoxLanguage
             throw new RuntimeError(operand, "Operands must be a number");
         }
 
+        /// <summary>
+        /// Converts any value into a displayable string. 
+        /// </summary>
+        private string Stringify(object value)
+        {
+            if (value == null) return "nil";
+
+            return value.ToString();
+        }
     }
 }

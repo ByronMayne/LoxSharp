@@ -113,5 +113,10 @@ namespace LoxLanguage
                 Report(token.line, " at '" + token.lexeme + "'", message);
             }
         }
+
+        public void RuntimeError(RuntimeError error)
+        {
+
+        }
     }
 }
