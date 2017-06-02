@@ -31,9 +31,39 @@ namespace LoxLanguage
             List<Stmt> statements = new List<Stmt>();
             while(!IsAtEnd())
             {
-                statements.Add(Statement());
+                statements.Add(Declaration());
             }
             return statements;
+        }
+
+
+        private Stmt Declaration()
+        {
+            try
+            {
+                if (Match(TokenType.Var)) return VarDeclartion();
+
+                return Statement(); 
+            }
+            catch(ParserException e)
+            {
+                Synchronize();
+                return null;
+            }
+        }
+
+        private Stmt VarDeclartion()
+        {
+            Token name = Consume(TokenType.Identifier, "Expect variable name.");
+
+            Expr initializer = null;
+            if(Match(TokenType.Equal))
+            {
+                initializer = Expression(); 
+            }
+
+            Consume(TokenType.Semicolon, "Expect ';' after variable declaration.");
+            return new Stmt.Var(name, initializer);
         }
 
         private Stmt Statement()
@@ -47,7 +77,26 @@ namespace LoxLanguage
 
         private Expr Expression()
         {
-            return Conditional();
+            return Assignment();
+        }
+
+        private Expr Assignment()
+        {
+            Expr expr = Equality();
+
+            if(Match(TokenType.Equal))
+            {
+                Token equal = Previous();
+                Expr value = Assignment(); 
+
+                if(expr is Expr.Variable)
+                {
+                    Token name = ((Expr.Variable)expr).name;
+                    return new Expr.Assign(name, value);
+                }
+                Error(equal, "Invalid assignment target.");
+            }
+            return expr;
         }
 
         private Stmt PrintStatement()
@@ -242,6 +291,11 @@ namespace LoxLanguage
             if (Match(TokenType.Number, TokenType.String))
             {
                 return new Expr.Literal(Previous().literal);
+            }
+
+            if(Match(TokenType.Identifier))
+            {
+                return new Expr.Variable(Previous());
             }
 
             if (Match(TokenType.LeftParen))

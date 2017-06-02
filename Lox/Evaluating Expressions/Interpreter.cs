@@ -6,9 +6,11 @@ namespace LoxLanguage
     public class Interpreter : Expr.IVisitor<object>, Stmt.IVisitor<object>
     {
         private IErrorHandler m_ErrorHandler;
+        private Environment m_Enviroment; 
 
         public Interpreter(IErrorHandler errorHandler)
         {
+            m_Enviroment = new Environment();
             m_ErrorHandler = errorHandler;
         }
 
@@ -292,7 +294,14 @@ namespace LoxLanguage
 
         public object Visit(Stmt.Var _var)
         {
-            throw new NotImplementedException();
+            object value = null;
+            if(_var.initializer != null)
+            {
+                value = Evaluate(_var.initializer);
+            }
+
+            m_Enviroment.Define(_var.name.lexeme, value);
+            return null;
         }
 
         public object Visit(Stmt.While _while)
@@ -302,7 +311,7 @@ namespace LoxLanguage
 
         public object Visit(Expr.Variable _variable)
         {
-            throw new NotImplementedException();
+            return m_Enviroment.Get(_variable.name);
         }
     }
 }
