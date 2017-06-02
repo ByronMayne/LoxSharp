@@ -100,9 +100,9 @@ namespace LoxLanguage
             // Create our parser
             Parser parser = new Parser(tokens, this);
             // Start the parse process.
-            Expression expression = parser.Parse();
+            List<Stmt> statements = parser.Parse();
             // Start our interpreter
-            m_Interpreter.Interpret(expression); 
+            m_Interpreter.Interpret(statements); 
         }
 
         public void Error(int line, string message)

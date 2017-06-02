@@ -1,24 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace LoxLanguage
 {
-    public class Interpreter : Expr.IVisitor<object>
+    public class Interpreter : Expr.IVisitor<object>, Stmt.IVisitor<object>
     {
-        private IErrorHandler m_ErrorHandler; 
+        private IErrorHandler m_ErrorHandler;
 
         public Interpreter(IErrorHandler errorHandler)
         {
             m_ErrorHandler = errorHandler;
         }
 
-        public void Interpret(Expr expresssion)
+        public void Interpret(List<Stmt> statements)
         {
             try
             {
-                object value = Evaluate(expresssion);
-                Console.WriteLine(Stringify(value));
+                for (int i = 0; i < statements.Count; i++)
+                {
+                    Execute(statements[i]);
+                }  
             }
-            catch( RuntimeError error)
+            catch (RuntimeError error)
             {
                 m_ErrorHandler.RuntimeError(error);
             }
@@ -54,12 +57,12 @@ namespace LoxLanguage
         {
             object right = Evaluate(prefix.rhs);
 
-            switch(prefix.opp.type)
+            switch (prefix.opp.type)
             {
                 case TokenType.Bang:
                     return !IsTrue(right);
                 case TokenType.Minus:
-                    ValidateNumberOperand(prefix.opp, right); 
+                    ValidateNumberOperand(prefix.opp, right);
                     return -(double)right;
                 case TokenType.MinusMinus:
                     ValidateNumberOperand(prefix.opp, right);
@@ -113,7 +116,7 @@ namespace LoxLanguage
                         return (string)left + Stringify(right);
                     }
                     // Not valid addition type. 
-                   throw new RuntimeError(binary.opp, "Operands must be two numbers or two strings.");
+                    throw new RuntimeError(binary.opp, "Operands must be two numbers or two strings.");
                 case TokenType.Modulus:
                     ValidateNumberOperand(binary.opp, left, right);
                     return (double)left % (double)right;
@@ -143,7 +146,7 @@ namespace LoxLanguage
         {
             if (value == null) return false;
             if (value is bool) return (bool)value;
-            return true; 
+            return true;
         }
 
         /// <summary>
@@ -160,6 +163,15 @@ namespace LoxLanguage
         private object Evaluate(Expr expression)
         {
             return expression.Accept(this);
+        }
+
+        /// <summary>
+        /// Accepts the incoming visitor to this class.
+        /// </summary>
+        /// <param name="stmt"></param>
+        private void Execute(Stmt stmt)
+        {
+            stmt.Accept(this);
         }
 
         /// <summary>
@@ -188,7 +200,7 @@ namespace LoxLanguage
         /// </summary>
         private void ValidateDivision(Token operand, object value)
         {
-            if((double)value == 0)
+            if ((double)value == 0)
             {
                 throw new RuntimeError(operand, "Divided by zero");
             }
@@ -235,6 +247,55 @@ namespace LoxLanguage
         }
 
         public object Visit(Expr.This _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Stmt.Block _block)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Stmt.Class _class)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Stmt.Expression _expression)
+        {
+            Evaluate(_expression.expression);
+            return null;
+        }
+
+        public object Visit(Stmt.Function _function)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Stmt.If _if)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Stmt.Print _print)
+        {
+            object value = Evaluate(_print.expression);
+            string output = Stringify(value);
+            Console.WriteLine(output);
+            return null;
+        }
+
+        public object Visit(Stmt.Return _return)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Stmt.Var _var)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Stmt.While _while)
         {
             throw new NotImplementedException();
         }
