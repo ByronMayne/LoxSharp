@@ -204,5 +204,40 @@ namespace LoxLanguage
 
             return value.ToString();
         }
+
+        public object Visit(Assign _assign)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Call _call)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Get _get)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Logical _logical)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Set _set)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Super _super)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(This _this)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

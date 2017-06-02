@@ -13,6 +13,40 @@ namespace LoxLanguage
             return expression.Accept(this);
         }
 
+        public string Visit(Expression.Get _get)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string Visit(Expression.Super _super)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string Visit(Expression.Set _set)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string Visit(Expression.Logical _logical)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string Visit(Expression.Call _call)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string Visit(Expression.This _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string Visit(Expression.Assign _assign)
+        {
+            throw new NotImplementedException();
+        }
 
         private string Parenthesize(string name, params Expression[] Expression)
         {

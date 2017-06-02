@@ -8,6 +8,7 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Collections" #>
 <#@ import namespace="System.Collections.Generic" #> 
+using System.Collections.Generic;
 <#
 	string BASE_TYPE = "Expression";
 	string TOKEN_TYPE = "Token";
@@ -15,11 +16,19 @@
 	string INDENT = "    ";
 
 	var expressions = new [] {
-		new Exp("Binary", new Arg(BASE_TYPE, "lhs"),  new Arg(TOKEN_TYPE, "opp"),  new Arg(BASE_TYPE, "rhs")),
-		new Exp("Grouping", new Arg(BASE_TYPE, "expression")),
-		new Exp("Literal", new Arg(OBJECT_TYPE, "value")),
-		new Exp("Prefix", new Arg(TOKEN_TYPE, "opp"), new Arg(BASE_TYPE, "rhs")),
-		new Exp("Postfix", new Arg(TOKEN_TYPE, "opp"), new Arg(BASE_TYPE, "lhs")),
+		new Exp("Assign",   new Arg(TOKEN_TYPE, "name"),         new Arg(BASE_TYPE, "value")),
+		new Exp("Binary",   new Arg(BASE_TYPE, "lhs"),           new Arg(TOKEN_TYPE, "opp"),      new Arg(BASE_TYPE, "rhs")),
+		new Exp("Call",     new Arg(BASE_TYPE, "callee"),        new Arg(TOKEN_TYPE, "paren"),     new Arg("List<" + BASE_TYPE + ">", "arguments")),
+		new Exp("Get",      new Arg(BASE_TYPE, "target"),        new Arg(TOKEN_TYPE, "name")),
+		new Exp("Grouping", new Arg(BASE_TYPE, "expression")),   
+		new Exp("Literal",  new Arg(OBJECT_TYPE, "value")),	     
+		new Exp("Logical",  new Arg(BASE_TYPE, "left"),          new Arg(TOKEN_TYPE, "opp"), new Arg(BASE_TYPE, "right")),
+		new Exp("Set",      new Arg(BASE_TYPE, "target"),        new Arg(TOKEN_TYPE, "name"),     new Arg(BASE_TYPE, "value")),
+		new Exp("Super",    new Arg(TOKEN_TYPE, "keyword"),      new Arg(TOKEN_TYPE, "method")),
+		new Exp("This",     new Arg(TOKEN_TYPE, "keyword")),
+		// Prefix + Postfix == Unary
+		new Exp("Prefix",      new Arg(TOKEN_TYPE, "opp"),       new Arg(BASE_TYPE, "rhs")),
+		new Exp("Postfix",     new Arg(TOKEN_TYPE, "opp"),       new Arg(BASE_TYPE, "lhs")),
 		new Exp("Conditional", new Arg(BASE_TYPE, "expression"), new Arg(BASE_TYPE, "thenBranch"), new Arg(BASE_TYPE, "elseBranch"))
     };
 
@@ -42,7 +51,7 @@ namespace LoxLanguage
 					Write(" Visit(");
 					Write(current.name);
 					Write(" ");
-					Write(current.name.ToLower());
+					Write("_" + current.name.ToLower());
 					WriteLine(");");
                 }
 				PopIndent();
