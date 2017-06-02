@@ -10,7 +10,7 @@
 <#@ import namespace="System.Collections.Generic" #> 
 using System.Collections.Generic;
 <#
-	string BASE_TYPE = "Expression";
+	string BASE_TYPE = "Expr";
 	string TOKEN_TYPE = "Token";
 	string OBJECT_TYPE = "object";
 	string INDENT = "    ";

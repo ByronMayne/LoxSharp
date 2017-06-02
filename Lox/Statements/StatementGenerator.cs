@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 namespace LoxLanguage
 {
-	public abstract class Statement
+	public abstract class Stmt
 	{
 		public interface IVisitor<T> 
 		{
@@ -17,11 +17,11 @@ namespace LoxLanguage
             T Visit(While _while);
 		}
  
-        public class Block : Statement
+        public class Block : Stmt
         {
-            public List<Statement> statements;
+            public List<Stmt> statements;
              
-            public Block(List<Statement> statements)
+            public Block(List<Stmt> statements)
             {
                 this.statements = statements;
             }
@@ -32,13 +32,13 @@ namespace LoxLanguage
             }
         }
 
-        public class Class : Statement
+        public class Class : Stmt
         {
             public Token name;
-            public Expression superClass;
-            public List<Statement.Function> methods;
+            public Expr superClass;
+            public List<Function> methods;
              
-            public Class(Token name, Expression superClass, List<Statement.Function> methods)
+            public Class(Token name, Expr superClass, List<Function> methods)
             {
                 this.name = name;
                 this.superClass = superClass;
@@ -51,11 +51,11 @@ namespace LoxLanguage
             }
         }
 
-        public class Expression : Statement
+        public class Expression : Stmt
         {
-            public Expression expression;
+            public Expr expression;
              
-            public Expression(Expression expression)
+            public Expression(Expr expression)
             {
                 this.expression = expression;
             }
@@ -66,13 +66,13 @@ namespace LoxLanguage
             }
         }
 
-        public class Function : Statement
+        public class Function : Stmt
         {
             public Token name;
             public List<Token> parameters;
-            public List<Statement> body;
+            public List<Stmt> body;
              
-            public Function(Token name, List<Token> parameters, List<Statement> body)
+            public Function(Token name, List<Token> parameters, List<Stmt> body)
             {
                 this.name = name;
                 this.parameters = parameters;
@@ -85,13 +85,13 @@ namespace LoxLanguage
             }
         }
 
-        public class If : Statement
+        public class If : Stmt
         {
             public Token condition;
-            public Statement thenBranch;
-            public Statement elseBranch;
+            public Stmt thenBranch;
+            public Stmt elseBranch;
              
-            public If(Token condition, Statement thenBranch, Statement elseBranch)
+            public If(Token condition, Stmt thenBranch, Stmt elseBranch)
             {
                 this.condition = condition;
                 this.thenBranch = thenBranch;
@@ -104,11 +104,11 @@ namespace LoxLanguage
             }
         }
 
-        public class Print : Statement
+        public class Print : Stmt
         {
-            public Statement expression;
+            public Expr expression;
              
-            public Print(Statement expression)
+            public Print(Expr expression)
             {
                 this.expression = expression;
             }
@@ -119,12 +119,12 @@ namespace LoxLanguage
             }
         }
 
-        public class Return : Statement
+        public class Return : Stmt
         {
             public Token keyword;
-            public Expression value;
+            public Expr value;
              
-            public Return(Token keyword, Expression value)
+            public Return(Token keyword, Expr value)
             {
                 this.keyword = keyword;
                 this.value = value;
@@ -136,12 +136,12 @@ namespace LoxLanguage
             }
         }
 
-        public class Var : Statement
+        public class Var : Stmt
         {
             public Token name;
-            public Expression initializer;
+            public Expr initializer;
              
-            public Var(Token name, Expression initializer)
+            public Var(Token name, Expr initializer)
             {
                 this.name = name;
                 this.initializer = initializer;
@@ -153,12 +153,12 @@ namespace LoxLanguage
             }
         }
 
-        public class While : Statement
+        public class While : Stmt
         {
-            public Expression condition;
-            public Statement body;
+            public Expr condition;
+            public Stmt body;
              
-            public While(Expression condition, Statement body)
+            public While(Expr condition, Stmt body)
             {
                 this.condition = condition;
                 this.body = body;

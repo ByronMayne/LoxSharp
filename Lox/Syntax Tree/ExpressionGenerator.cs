@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 namespace LoxLanguage
 {
-	public abstract class Expression
+	public abstract class Expr
 	{
 		public interface IVisitor<T> 
 		{
@@ -21,12 +21,12 @@ namespace LoxLanguage
             T Visit(Conditional _conditional);
 		}
  
-        public class Assign : Expression
+        public class Assign : Expr
         {
             public Token name;
-            public Expression value;
+            public Expr value;
              
-            public Assign(Token name, Expression value)
+            public Assign(Token name, Expr value)
             {
                 this.name = name;
                 this.value = value;
@@ -38,13 +38,13 @@ namespace LoxLanguage
             }
         }
 
-        public class Binary : Expression
+        public class Binary : Expr
         {
-            public Expression lhs;
+            public Expr lhs;
             public Token opp;
-            public Expression rhs;
+            public Expr rhs;
              
-            public Binary(Expression lhs, Token opp, Expression rhs)
+            public Binary(Expr lhs, Token opp, Expr rhs)
             {
                 this.lhs = lhs;
                 this.opp = opp;
@@ -57,13 +57,13 @@ namespace LoxLanguage
             }
         }
 
-        public class Call : Expression
+        public class Call : Expr
         {
-            public Expression callee;
+            public Expr callee;
             public Token paren;
-            public List<Expression> arguments;
+            public List<Expr> arguments;
              
-            public Call(Expression callee, Token paren, List<Expression> arguments)
+            public Call(Expr callee, Token paren, List<Expr> arguments)
             {
                 this.callee = callee;
                 this.paren = paren;
@@ -76,12 +76,12 @@ namespace LoxLanguage
             }
         }
 
-        public class Get : Expression
+        public class Get : Expr
         {
-            public Expression target;
+            public Expr target;
             public Token name;
              
-            public Get(Expression target, Token name)
+            public Get(Expr target, Token name)
             {
                 this.target = target;
                 this.name = name;
@@ -93,11 +93,11 @@ namespace LoxLanguage
             }
         }
 
-        public class Grouping : Expression
+        public class Grouping : Expr
         {
-            public Expression expression;
+            public Expr expression;
              
-            public Grouping(Expression expression)
+            public Grouping(Expr expression)
             {
                 this.expression = expression;
             }
@@ -108,7 +108,7 @@ namespace LoxLanguage
             }
         }
 
-        public class Literal : Expression
+        public class Literal : Expr
         {
             public object value;
              
@@ -123,13 +123,13 @@ namespace LoxLanguage
             }
         }
 
-        public class Logical : Expression
+        public class Logical : Expr
         {
-            public Expression left;
+            public Expr left;
             public Token opp;
-            public Expression right;
+            public Expr right;
              
-            public Logical(Expression left, Token opp, Expression right)
+            public Logical(Expr left, Token opp, Expr right)
             {
                 this.left = left;
                 this.opp = opp;
@@ -142,13 +142,13 @@ namespace LoxLanguage
             }
         }
 
-        public class Set : Expression
+        public class Set : Expr
         {
-            public Expression target;
+            public Expr target;
             public Token name;
-            public Expression value;
+            public Expr value;
              
-            public Set(Expression target, Token name, Expression value)
+            public Set(Expr target, Token name, Expr value)
             {
                 this.target = target;
                 this.name = name;
@@ -161,7 +161,7 @@ namespace LoxLanguage
             }
         }
 
-        public class Super : Expression
+        public class Super : Expr
         {
             public Token keyword;
             public Token method;
@@ -178,7 +178,7 @@ namespace LoxLanguage
             }
         }
 
-        public class This : Expression
+        public class This : Expr
         {
             public Token keyword;
              
@@ -193,12 +193,12 @@ namespace LoxLanguage
             }
         }
 
-        public class Prefix : Expression
+        public class Prefix : Expr
         {
             public Token opp;
-            public Expression rhs;
+            public Expr rhs;
              
-            public Prefix(Token opp, Expression rhs)
+            public Prefix(Token opp, Expr rhs)
             {
                 this.opp = opp;
                 this.rhs = rhs;
@@ -210,12 +210,12 @@ namespace LoxLanguage
             }
         }
 
-        public class Postfix : Expression
+        public class Postfix : Expr
         {
             public Token opp;
-            public Expression lhs;
+            public Expr lhs;
              
-            public Postfix(Token opp, Expression lhs)
+            public Postfix(Token opp, Expr lhs)
             {
                 this.opp = opp;
                 this.lhs = lhs;
@@ -227,13 +227,13 @@ namespace LoxLanguage
             }
         }
 
-        public class Conditional : Expression
+        public class Conditional : Expr
         {
-            public Expression expression;
-            public Expression thenBranch;
-            public Expression elseBranch;
+            public Expr expression;
+            public Expr thenBranch;
+            public Expr elseBranch;
              
-            public Conditional(Expression expression, Expression thenBranch, Expression elseBranch)
+            public Conditional(Expr expression, Expr thenBranch, Expr elseBranch)
             {
                 this.expression = expression;
                 this.thenBranch = thenBranch;

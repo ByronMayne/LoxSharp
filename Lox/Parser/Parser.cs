@@ -26,46 +26,65 @@ namespace LoxLanguage
         /// Starts the parsing processes for our list of tokens. 
         /// </summary>
         /// <returns></returns>
-        public Expression Parse()
+        public List<Stmt> Parse()
         {
-            try
+            List<Stmt> statements = new List<Stmt>();
+            while(!IsAtEnd())
             {
-                return Expression();
+                statements.Add(Statement());
             }
-            catch
-            {
-                return null;
-            }
+            return statements;
         }
 
-        private Expression Expression()
+        private Stmt Statement()
+        {
+            if(Match(TokenType.Print))
+            {
+                return PrintStatement();
+            }
+            return ExpressionStatement();
+        }
+
+        private Expr Expression()
         {
             return Conditional();
         }
 
-        private Expression Conditional()
+        private Stmt PrintStatement()
         {
-            Expression expression = Equality();
+            Expr value = Expression();
+            Consume(TokenType.Semicolon, "Expect ';' after value.");
+            return new Stmt.Print(value);
+        }
+
+        public Stmt ExpressionStatement()
+        {
+            return null;
+        }
+
+        private Expr Conditional()
+        {
+            Expr expression = Equality();
 
             if (Match(TokenType.Question))
             {
-                Expression thenBranch = Expression();
+                Expr thenBranch = Expression();
                 Consume(TokenType.Colon, "Expect ':' after then branch of conditional expression.");
-                Expression elseBranch = Conditional();
-                expression = new Expression.Conditional(expression, thenBranch, elseBranch);
+                Expr elseBranch = Conditional();
+                expression = new Expr.Conditional(expression, thenBranch, elseBranch);
             }
             return expression;
         }
 
-        public Expression Equality()
+        public Expr Equality()
         {
-            Expression expression = Comparison();
+            Expr expression = Comparison();
 
             while (Match(TokenType.BangEqual, TokenType.EqualEqual))
             {
                 Token @operator = Previous();
-                Expression right = Comparison();
-                expression = new Expression.Binary(expression, @operator, right);
+                Expr right = Comparison();
+                expression = new Expr.Binary(expression, @operator, right);
             }
 
             return expression;
@@ -148,86 +167,86 @@ namespace LoxLanguage
         /// operator rules follow the same pattern:
         /// </summary>
         /// <returns></returns>
-        private Expression Comparison()
+        private Expr Comparison()
         {
-            Expression expression = Term();
+            Expr expression = Term();
 
             while (Match(TokenType.Greater, TokenType.GreaterEqual, TokenType.LeftBrace, TokenType.LessEqual))
             {
                 Token @operator = Previous();
-                Expression right = Term();
-                expression = new Expression.Binary(expression, @operator, right);
+                Expr right = Term();
+                expression = new Expr.Binary(expression, @operator, right);
             }
 
             return expression;
         }
 
-        private Expression Term()
+        private Expr Term()
         {
-            Expression expression = Factor();
+            Expr expression = Factor();
 
             while (Match(TokenType.Minus, TokenType.Plus))
             {
                 Token @operator = Previous();
-                Expression right = Factor();
-                expression = new Expression.Binary(expression, @operator, right);
+                Expr right = Factor();
+                expression = new Expr.Binary(expression, @operator, right);
             }
 
             return expression;
         }
 
-        private Expression Factor()
+        private Expr Factor()
         {
-            Expression expression = Unary();
+            Expr expression = Unary();
 
             while (Match(TokenType.Slash, TokenType.Star, TokenType.Modulus))
             {
                 Token @operator = Previous();
-                Expression right = Unary();
-                expression = new Expression.Binary(expression, @operator, right);
+                Expr right = Unary();
+                expression = new Expr.Binary(expression, @operator, right);
             }
 
             return expression;
         }
 
-        private Expression Unary()
+        private Expr Unary()
         {
             if (Match(TokenType.Bang, TokenType.Minus, TokenType.MinusMinus, TokenType.PlusPlus))
             {
                 Token @operator = Previous();
-                Expression right = Unary();
-                return new Expression.Prefix(@operator, right);
+                Expr right = Unary();
+                return new Expr.Prefix(@operator, right);
             }
             return Postfix();
         }
 
-        private Expression Postfix()
+        private Expr Postfix()
         {
-            Expression expression = Primary();
+            Expr expression = Primary();
 
             while (Match(TokenType.MinusMinus, TokenType.PlusPlus))
             {
-                expression = new Expression.Postfix(Previous(), expression);
+                expression = new Expr.Postfix(Previous(), expression);
             }
             return expression;
         }
 
-        private Expression Primary()
+        private Expr Primary()
         {
-            if (Match(TokenType.False)) return new Expression.Literal(false);
-            if (Match(TokenType.True)) return new Expression.Literal(true);
-            if (Match(TokenType.Nil)) return new Expression.Literal(null);
+            if (Match(TokenType.False)) return new Expr.Literal(false);
+            if (Match(TokenType.True)) return new Expr.Literal(true);
+            if (Match(TokenType.Nil)) return new Expr.Literal(null);
 
             if (Match(TokenType.Number, TokenType.String))
             {
-                return new Expression.Literal(Previous().literal);
+                return new Expr.Literal(Previous().literal);
             }
 
             if (Match(TokenType.LeftParen))
             {
-                Expression expression = Expression();
+                Expr expression = Expression();
                 Consume(TokenType.RightParen, "Expect ')' after expression.");
-                return new Expression.Grouping(expression);
+                return new Expr.Grouping(expression);
             }
 
             // Error productions

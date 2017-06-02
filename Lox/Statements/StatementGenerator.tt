@@ -10,19 +10,19 @@
 <#@ import namespace="System.Collections.Generic" #> 
 using System.Collections.Generic;
 <#
-	string BASE_TYPE = "Statement";	
-	string EXPRESSION = "Expression";
+	string BASE_TYPE = "Stmt";	
+	string EXPRESSION = "Expr";
 	string TOKEN_TYPE = "Token";
 	string OBJECT_TYPE = "object";
 	string INDENT = "    ";
 
 	var expressions = new [] {
 		new Exp("Block", new Arg("List<" +BASE_TYPE + ">", "statements")),
-		new Exp("Class", new Arg(TOKEN_TYPE, "name"), new Arg(EXPRESSION, "superClass"), new Arg("List<Statement.Function>", "methods")),
+		new Exp("Class", new Arg(TOKEN_TYPE, "name"), new Arg(EXPRESSION, "superClass"), new Arg("List<Function>", "methods")),
 		new Exp("Expression", new Arg(EXPRESSION, "expression")),
 		new Exp("Function", new Arg(TOKEN_TYPE, "name"), new Arg("List<Token>", "parameters"), new Arg("List<" + BASE_TYPE + ">", "body")),
 		new Exp("If", new Arg(TOKEN_TYPE, "condition"), new Arg(BASE_TYPE, "thenBranch"), new Arg(BASE_TYPE, "elseBranch")),
-		new Exp("Print", new Arg(BASE_TYPE, "expression")),
+		new Exp("Print", new Arg(EXPRESSION, "expression")),
 		new Exp("Return", new Arg(TOKEN_TYPE, "keyword"), new Arg(EXPRESSION, "value")),
 		new Exp("Var", new Arg(TOKEN_TYPE, "name"), new Arg(EXPRESSION, "initializer")),
 		new Exp("While", new Arg(EXPRESSION, "condition"), new Arg(BASE_TYPE, "body"))

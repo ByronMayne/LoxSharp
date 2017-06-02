@@ -1,9 +1,8 @@
 ﻿using System;
-using static LoxLanguage.Expression;
 
 namespace LoxLanguage
 {
-    public class Interpreter : IVisitor<object>
+    public class Interpreter : Expr.IVisitor<object>
     {
         private IErrorHandler m_ErrorHandler; 
 
@@ -12,7 +11,7 @@ namespace LoxLanguage
             m_ErrorHandler = errorHandler;
         }
 
-        public void Interpret(Expression expresssion)
+        public void Interpret(Expr expresssion)
         {
             try
             {
@@ -25,12 +24,12 @@ namespace LoxLanguage
             }
         }
 
-        public object Visit(Literal literal)
+        public object Visit(Expr.Literal literal)
         {
             return literal.value;
         }
 
-        public object Visit(Postfix postfix)
+        public object Visit(Expr.Postfix postfix)
         {
             object right = Evaluate(postfix.lhs);
             ValidateNumberOperand(postfix.opp, right);
@@ -46,12 +45,12 @@ namespace LoxLanguage
             return null;
         }
 
-        public object Visit(Conditional conditional)
+        public object Visit(Expr.Conditional conditional)
         {
             throw new NotImplementedException();
         }
 
-        public object Visit(Prefix prefix)
+        public object Visit(Expr.Prefix prefix)
         {
             object right = Evaluate(prefix.rhs);
 
@@ -76,12 +75,12 @@ namespace LoxLanguage
 
 
 
-        public object Visit(Grouping grouping)
+        public object Visit(Expr.Grouping grouping)
         {
             return Evaluate(grouping.expression);
         }
 
-        public object Visit(Binary binary)
+        public object Visit(Expr.Binary binary)
         {
             object right = Evaluate(binary.rhs);
             object left = Evaluate(binary.lhs);
@@ -158,7 +157,7 @@ namespace LoxLanguage
         /// <summary>
         /// Returns the value of the expression.
         /// </summary>
-        private object Evaluate(Expression expression)
+        private object Evaluate(Expr expression)
         {
             return expression.Accept(this);
         }
@@ -205,37 +204,37 @@ namespace LoxLanguage
             return value.ToString();
         }
 
-        public object Visit(Assign _assign)
+        public object Visit(Expr.Assign _assign)
         {
             throw new NotImplementedException();
         }
 
-        public object Visit(Call _call)
+        public object Visit(Expr.Call _call)
         {
             throw new NotImplementedException();
         }
 
-        public object Visit(Get _get)
+        public object Visit(Expr.Get _get)
         {
             throw new NotImplementedException();
         }
 
-        public object Visit(Logical _logical)
+        public object Visit(Expr.Logical _logical)
         {
             throw new NotImplementedException();
         }
 
-        public object Visit(Set _set)
+        public object Visit(Expr.Set _set)
         {
             throw new NotImplementedException();
         }
 
-        public object Visit(Super _super)
+        public object Visit(Expr.Super _super)
         {
             throw new NotImplementedException();
         }
 
-        public object Visit(This _this)
+        public object Visit(Expr.This _this)
         {
             throw new NotImplementedException();
         }
