@@ -43,6 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AST\GenerateAst.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GenerateAst.tt</DependentUpon>
+    </Compile>
     <Compile Include="Evaluating Expressions\Interpreter.cs" />
     <Compile Include="Exceptions\LoxExceptions.cs" />
     <Compile Include="Parser\Parser.cs" />
@@ -71,6 +76,10 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AST\GenerateAst.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>GenerateAst.cs</LastGenOutput>
+    </Content>
     <Content Include="Scanning\KeywordGenerator.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>KeywordGenerator.cs</LastGenOutput>
@@ -83,6 +92,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
