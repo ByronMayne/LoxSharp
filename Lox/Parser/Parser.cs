@@ -59,7 +59,9 @@ namespace LoxLanguage
 
         public Stmt ExpressionStatement()
         {
-            return null;
+            Expr expr = Expression();
+            Consume(TokenType.Semicolon, "Expect ':' after expression.");
+            return new Stmt.Expression(expr);
         }
 
         private Expr Conditional()
