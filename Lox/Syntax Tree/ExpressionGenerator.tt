@@ -29,7 +29,8 @@ using System.Collections.Generic;
 		// Prefix + Postfix == Unary
 		new Exp("Prefix",      new Arg(TOKEN_TYPE, "opp"),       new Arg(BASE_TYPE, "rhs")),
 		new Exp("Postfix",     new Arg(TOKEN_TYPE, "opp"),       new Arg(BASE_TYPE, "lhs")),
-		new Exp("Conditional", new Arg(BASE_TYPE, "expression"), new Arg(BASE_TYPE, "thenBranch"), new Arg(BASE_TYPE, "elseBranch"))
+		new Exp("Conditional", new Arg(BASE_TYPE, "expression"), new Arg(BASE_TYPE, "thenBranch"), new Arg(BASE_TYPE, "elseBranch")),
+		new Exp("Variable", new Arg(TOKEN_TYPE, "name"))
     };
 
 #>

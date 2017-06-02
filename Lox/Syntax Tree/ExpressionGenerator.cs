@@ -19,6 +19,7 @@ namespace LoxLanguage
             T Visit(Prefix _prefix);
             T Visit(Postfix _postfix);
             T Visit(Conditional _conditional);
+            T Visit(Variable _variable);
 		}
  
         public class Assign : Expr
@@ -238,6 +239,21 @@ namespace LoxLanguage
                 this.expression = expression;
                 this.thenBranch = thenBranch;
                 this.elseBranch = elseBranch;
+            }
+             
+            public override T Accept<T>(IVisitor<T> visitor)
+            {
+                return visitor.Visit(this);
+            }
+        }
+
+        public class Variable : Expr
+        {
+            public Token name;
+             
+            public Variable(Token name)
+            {
+                this.name = name;
             }
              
             public override T Accept<T>(IVisitor<T> visitor)
