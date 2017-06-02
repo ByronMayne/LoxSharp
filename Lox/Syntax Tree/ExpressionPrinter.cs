@@ -40,6 +40,11 @@ namespace LoxLanguage
             throw new NotImplementedException();
         }
 
+        public string Visit(Expr.Variable _variable)
+        {
+            throw new NotImplementedException();
+        }
+
         public string Visit(Expr.Assign _assign)
         {
             throw new NotImplementedException();

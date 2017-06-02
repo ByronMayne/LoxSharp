@@ -299,5 +299,10 @@ namespace LoxLanguage
         {
             throw new NotImplementedException();
         }
+
+        public object Visit(Expr.Variable _variable)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
