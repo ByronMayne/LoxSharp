@@ -7,3 +7,7 @@ var a = 1;
 var b = 2;
 var c = a + b;
 print c;
+// Assignment
+print "-= 8.4.2 Assignment semantics =-";
+var count = 1;
+print count = 2;

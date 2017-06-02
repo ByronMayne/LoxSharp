@@ -25,5 +25,15 @@ namespace LoxLanguage
             }
             throw new RuntimeError(name, "Undefined variable '" + name.lexeme + ".");
         }
+
+        public void Assign(Token name, object value)
+        {
+            if(m_Values.ContainsKey(name.lexeme))
+            {
+                m_Values[name.lexeme] = value;
+                return;
+            }
+            throw new RuntimeError(name, "Undefined variable '" + name.lexeme + "'.");
+        }
     }
 }

@@ -6,7 +6,7 @@ namespace LoxLanguage
     public class Interpreter : Expr.IVisitor<object>, Stmt.IVisitor<object>
     {
         private IErrorHandler m_ErrorHandler;
-        private Environment m_Enviroment; 
+        private Environment m_Enviroment;
 
         public Interpreter(IErrorHandler errorHandler)
         {
@@ -21,7 +21,7 @@ namespace LoxLanguage
                 for (int i = 0; i < statements.Count; i++)
                 {
                     Execute(statements[i]);
-                }  
+                }
             }
             catch (RuntimeError error)
             {
@@ -173,7 +173,10 @@ namespace LoxLanguage
         /// <param name="stmt"></param>
         private void Execute(Stmt stmt)
         {
-            stmt.Accept(this);
+            if (stmt != null)
+            {
+                stmt.Accept(this);
+            }
         }
 
         /// <summary>
@@ -220,7 +223,9 @@ namespace LoxLanguage
 
         public object Visit(Expr.Assign _assign)
         {
-            throw new NotImplementedException();
+            object value = Evaluate(_assign.value);
+            m_Enviroment.Assign(_assign.name, value);
+            return value;
         }
 
         public object Visit(Expr.Call _call)
@@ -295,7 +300,7 @@ namespace LoxLanguage
         public object Visit(Stmt.Var _var)
         {
             object value = null;
-            if(_var.initializer != null)
+            if (_var.initializer != null)
             {
                 value = Evaluate(_var.initializer);
             }
