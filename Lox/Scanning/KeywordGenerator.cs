@@ -12,6 +12,7 @@ namespace LoxLanguage
 		public const string CLASS = "class";
 		public const string ELSE = "else";
 		public const string FALSE = "false";
+		public const string TRUE = "true";
 		public const string FOR = "for";
 		public const string FUN = "fun";
 		public const string IF = "if";
@@ -35,6 +36,7 @@ namespace LoxLanguage
 			MAP[CLASS] = TokenType.Class;
 			MAP[ELSE] = TokenType.Else;
 			MAP[FALSE] = TokenType.False;
+			MAP[TRUE] = TokenType.True;
 			MAP[FOR] = TokenType.For;
 			MAP[FUN] = TokenType.Fun;
 			MAP[IF] = TokenType.If;
