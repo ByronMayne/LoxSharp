@@ -1,0 +1,8 @@
+D:\Repositories\LoxSharp\LoxRunner\bin\Debug\LoxRunner.exe.config
+D:\Repositories\LoxSharp\LoxRunner\bin\Debug\LoxRunner.exe
+D:\Repositories\LoxSharp\LoxRunner\bin\Debug\LoxRunner.pdb
+D:\Repositories\LoxSharp\LoxRunner\bin\Debug\Lox.exe
+D:\Repositories\LoxSharp\LoxRunner\bin\Debug\Lox.pdb
+D:\Repositories\LoxSharp\LoxRunner\obj\Debug\LoxRunner.csprojResolveAssemblyReference.cache
+D:\Repositories\LoxSharp\LoxRunner\obj\Debug\LoxRunner.exe
+D:\Repositories\LoxSharp\LoxRunner\obj\Debug\LoxRunner.pdb
