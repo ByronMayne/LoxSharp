@@ -68,10 +68,9 @@ namespace LoxLanguage
 
         private Stmt Statement()
         {
-            if(Match(TokenType.Print))
-            {
-                return PrintStatement();
-            }
+            if(Match(TokenType.Print)) return PrintStatement();
+            if (Match(TokenType.LeftBrace)) return new Stmt.Block(Block());
+
             return ExpressionStatement();
         }
 
@@ -104,6 +103,19 @@ namespace LoxLanguage
             Expr value = Expression();
             Consume(TokenType.Semicolon, "Expect ';' after value.");
             return new Stmt.Print(value);
+        }
+
+        private List<Stmt> Block()
+        {
+            List<Stmt> statements = new List<Stmt>();
+
+            while(!Check(TokenType.RightBrace) && !IsAtEnd())
+            {
+                statements.Add(Declaration());
+            }
+
+            Consume(TokenType.RightBrace, "Expect '}' after block.");
+            return statements;
         }
 
         public Stmt ExpressionStatement()

@@ -1,13 +1,21 @@
-﻿print "one";
-print true;
-print 2 + 1;
-// Vars
-print "-= Variables =-";
-var a = 1;
-var b = 2;
-var c = a + b;
+﻿
+print "-= 8.5.2 Block syntax and semantics =-";
+var a = "global a";
+var b = "global b";
+var c = "global c";
+{
+  var a = "outer a";
+  var b = "outer b";
+  {
+    var a = "inner a";
+    print a;
+    print b;
+    print c;
+  }
+  print a;
+  print b;
+  print c;
+}
+print a;
+print b;
 print c;
-// Assignment
-print "-= 8.4.2 Assignment semantics =-";
-var count = 1;
-print count = 2;

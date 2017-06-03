@@ -180,6 +180,29 @@ namespace LoxLanguage
         }
 
         /// <summary>
+        /// Loops over all the statements in a block and sets their local environment. 
+        /// </summary>
+        /// <param name="statements">The list of statements that we want to run in our block.</param>
+        /// <param name="environment">The environment we store their local variables in.</param>
+        private void ExecuteBlock(List<Stmt> statements, Environment environment)
+        {
+            Environment previous = m_Enviroment;
+            try
+            {
+                m_Enviroment = environment;
+
+                for(int i = 0; i < statements.Count; i++)
+                {
+                    Execute(statements[i]);
+                }
+            }
+            finally
+            {
+                m_Enviroment = previous;
+            }
+        }
+
+        /// <summary>
         /// Validates that a token and a value are both a number
         /// operand;
         /// </summary>
@@ -260,7 +283,9 @@ namespace LoxLanguage
 
         public object Visit(Stmt.Block _block)
         {
-            throw new NotImplementedException();
+            Environment blockScope = new Environment(m_Enviroment);
+            ExecuteBlock(_block.statements, blockScope);
+            return null;
         }
 
         public object Visit(Stmt.Class _class)
