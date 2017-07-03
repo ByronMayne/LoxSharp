@@ -69,7 +69,8 @@ namespace LoxLanguage
         private Stmt Statement()
         {
             if (Match(TokenType.If)) return IfStatement();
-            if(Match(TokenType.Print)) return PrintStatement();
+            if (Match(TokenType.Print)) return PrintStatement();
+            if (Match(TokenType.While)) return WhileStatement();
             if (Match(TokenType.LeftBrace)) return new Stmt.Block(Block());
 
             return ExpressionStatement();
@@ -144,6 +145,16 @@ namespace LoxLanguage
                 elseBranch = Statement();
             }
             return new Stmt.If(condition, thenBranch, elseBranch);
+        }
+
+        private Stmt WhileStatement()
+        {
+            Consume(TokenType.LeftParen, "Expect '(' after 'while'.");
+            Expr condition = Expression();
+            Consume(TokenType.RightParen, "Expect ')' after condition.");
+            Stmt body = Statement();
+
+            return new Stmt.While(condition, body);
         }
 
         private List<Stmt> Block()
