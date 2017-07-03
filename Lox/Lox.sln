@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lox", "Lox.csproj", "{9522B356-D82D-44D7-AFD1-DC1F7DC445F4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoxRunner", "..\LoxRunner\LoxRunner.csproj", "{923F931B-F340-4616-8D64-1029329C874B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{9522B356-D82D-44D7-AFD1-DC1F7DC445F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9522B356-D82D-44D7-AFD1-DC1F7DC445F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9522B356-D82D-44D7-AFD1-DC1F7DC445F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{923F931B-F340-4616-8D64-1029329C874B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{923F931B-F340-4616-8D64-1029329C874B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{923F931B-F340-4616-8D64-1029329C874B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{923F931B-F340-4616-8D64-1029329C874B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

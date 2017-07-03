@@ -332,7 +332,7 @@ namespace LoxLanguage
         {
             object value = Evaluate(_print.expression);
             string output = Stringify(value);
-            Console.WriteLine(output);
+             Console.WriteLine(output);
             return null;
         }
 
@@ -355,7 +355,12 @@ namespace LoxLanguage
 
         public object Visit(Stmt.While _while)
         {
-            throw new NotImplementedException();
+
+            while(IsTrue(Evaluate(_while.condition)))
+            {
+                Execute(_while.body);
+            }
+            return null;
         }
 
         public object Visit(Expr.Variable _variable)
