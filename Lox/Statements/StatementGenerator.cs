@@ -87,11 +87,11 @@ namespace LoxLanguage
 
         public class If : Stmt
         {
-            public Token condition;
+            public Expr condition;
             public Stmt thenBranch;
             public Stmt elseBranch;
              
-            public If(Token condition, Stmt thenBranch, Stmt elseBranch)
+            public If(Expr condition, Stmt thenBranch, Stmt elseBranch)
             {
                 this.condition = condition;
                 this.thenBranch = thenBranch;

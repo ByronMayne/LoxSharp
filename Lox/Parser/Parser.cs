@@ -68,6 +68,7 @@ namespace LoxLanguage
 
         private Stmt Statement()
         {
+            if (Match(TokenType.If)) return IfStatement();
             if(Match(TokenType.Print)) return PrintStatement();
             if (Match(TokenType.LeftBrace)) return new Stmt.Block(Block());
 
@@ -105,6 +106,21 @@ namespace LoxLanguage
             return new Stmt.Print(value);
         }
 
+        private Stmt IfStatement()
+        {
+            Consume(TokenType.LeftParen, "Expect '(' after 'if'.");
+            Expr condition = Expression();
+            Consume(TokenType.RightParen, "Expect ')' after if condition.");
+
+            Stmt thenBranch = Statement();
+            Stmt elseBranch = null;
+            if (Match(TokenType.Else))
+            {
+                elseBranch = Statement();
+            }
+            return new Stmt.If(condition, thenBranch, elseBranch);
+        }
+
         private List<Stmt> Block()
         {
             List<Stmt> statements = new List<Stmt>();
@@ -115,6 +131,7 @@ namespace LoxLanguage
             }
 
             Consume(TokenType.RightBrace, "Expect '}' after block.");
+
             return statements;
         }
 

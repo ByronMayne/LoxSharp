@@ -21,7 +21,7 @@ using System.Collections.Generic;
 		new Exp("Class", new Arg(TOKEN_TYPE, "name"), new Arg(EXPRESSION, "superClass"), new Arg("List<Function>", "methods")),
 		new Exp("Expression", new Arg(EXPRESSION, "expression")),
 		new Exp("Function", new Arg(TOKEN_TYPE, "name"), new Arg("List<Token>", "parameters"), new Arg("List<" + BASE_TYPE + ">", "body")),
-		new Exp("If", new Arg(TOKEN_TYPE, "condition"), new Arg(BASE_TYPE, "thenBranch"), new Arg(BASE_TYPE, "elseBranch")),
+		new Exp("If", new Arg(EXPRESSION, "condition"), new Arg(BASE_TYPE, "thenBranch"), new Arg(BASE_TYPE, "elseBranch")),
 		new Exp("Print", new Arg(EXPRESSION, "expression")),
 		new Exp("Return", new Arg(TOKEN_TYPE, "keyword"), new Arg(EXPRESSION, "value")),
 		new Exp("Var", new Arg(TOKEN_TYPE, "name"), new Arg(EXPRESSION, "initializer")),
