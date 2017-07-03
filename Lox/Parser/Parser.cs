@@ -287,7 +287,7 @@ namespace LoxLanguage
         {
             Expr expression = Term();
 
-            while (Match(TokenType.Greater, TokenType.GreaterEqual, TokenType.LeftBrace, TokenType.LessEqual))
+            while (Match(TokenType.Greater, TokenType.GreaterEqual, TokenType.Less, TokenType.LessEqual))
             {
                 Token @operator = Previous();
                 Expr right = Term();
