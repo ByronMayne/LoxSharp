@@ -263,7 +263,18 @@ namespace LoxLanguage
 
         public object Visit(Expr.Logical _logical)
         {
-            throw new NotImplementedException();
+            object left = Evaluate(_logical.left);
+
+            if(_logical.opp.type == TokenType.Or)
+            {
+                if (IsTrue(left)) return left;
+            }
+            else
+            {
+                if (!IsTrue(left)) return left;
+            }
+
+            return Evaluate(_logical.right);
         }
 
         public object Visit(Expr.Set _set)
@@ -306,7 +317,15 @@ namespace LoxLanguage
 
         public object Visit(Stmt.If _if)
         {
-            throw new NotImplementedException();
+            if (IsTrue(Evaluate(_if.condition)))
+            {
+                Execute(_if.thenBranch);
+            }
+            else if (_if.elseBranch != null)
+            {
+                Execute(_if.elseBranch);
+            }
+            return null;
         }
 
         public object Visit(Stmt.Print _print)

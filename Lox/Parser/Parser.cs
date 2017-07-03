@@ -82,7 +82,7 @@ namespace LoxLanguage
 
         private Expr Assignment()
         {
-            Expr expr = Equality();
+            Expr expr = Or();
 
             if(Match(TokenType.Equal))
             {
@@ -95,6 +95,31 @@ namespace LoxLanguage
                     return new Expr.Assign(name, value);
                 }
                 Error(equal, "Invalid assignment target.");
+            }
+            return expr;
+        }
+
+        private Expr Or()
+        {
+            Expr expr = And();
+
+            while(Match(TokenType.Or))
+            {
+                Token @operator = Previous();
+                Expr right = And();
+                expr = new Expr.Logical(expr, @operator, right); 
+            }
+            return expr; 
+        }
+
+        private Expr And()
+        {
+            Expr expr = Equality();
+            while(Match(TokenType.And))
+            {
+                Token @operator = Previous();
+                Expr right = Equality();
+                expr = new Expr.Logical(expr, @operator, right);
             }
             return expr;
         }
