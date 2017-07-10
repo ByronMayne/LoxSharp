@@ -190,7 +190,10 @@
        /// while
        /// </summary>
        While,
-
+       /// <summary>
+       /// break
+       /// </summary>
+       Break,
 
        EOF
     }

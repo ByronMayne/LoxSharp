@@ -25,7 +25,8 @@ using System.Collections.Generic;
 		new Exp("Print", new Arg(EXPRESSION, "expression")),
 		new Exp("Return", new Arg(TOKEN_TYPE, "keyword"), new Arg(EXPRESSION, "value")),
 		new Exp("Var", new Arg(TOKEN_TYPE, "name"), new Arg(EXPRESSION, "initializer")),
-		new Exp("While", new Arg(EXPRESSION, "condition"), new Arg(BASE_TYPE, "body"))
+		new Exp("While", new Arg(EXPRESSION, "condition"), new Arg(BASE_TYPE, "body")),
+		new Exp("Break")
     };
 
 #>

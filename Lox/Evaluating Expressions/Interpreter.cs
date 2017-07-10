@@ -41,13 +41,19 @@ namespace LoxLanguage
             switch (postfix.opp.type)
             {
                 case TokenType.MinusMinus:
-                    return (double)right - 1;
+                    right = (double)right - 1;
+                    break;
                 case TokenType.PlusPlus:
-                    return (double)right + 1;
+                    right = (double)right + 1;
+                    break;
             }
-
-            // Unreachable
-            return null;
+            /// This was made up by me because in the book there is nothing that assigns this value. 
+            // Cast to variable type
+            Expr.Variable asVariable = (Expr.Variable)postfix.lhs;
+            // Assign it's value
+            m_Enviroment.Assign(asVariable.name, right);
+            // Return the value. 
+            return right;
         }
 
         public object Visit(Expr.Conditional conditional)
@@ -171,12 +177,13 @@ namespace LoxLanguage
         /// Accepts the incoming visitor to this class.
         /// </summary>
         /// <param name="stmt"></param>
-        private void Execute(Stmt stmt)
+        private object Execute(Stmt stmt)
         {
             if (stmt != null)
             {
-                stmt.Accept(this);
+                return stmt.Accept(this);
             }
+            return null;
         }
 
         /// <summary>
@@ -191,7 +198,7 @@ namespace LoxLanguage
             {
                 m_Enviroment = environment;
 
-                for(int i = 0; i < statements.Count; i++)
+                for (int i = 0; i < statements.Count; i++)
                 {
                     Execute(statements[i]);
                 }
@@ -265,7 +272,7 @@ namespace LoxLanguage
         {
             object left = Evaluate(_logical.left);
 
-            if(_logical.opp.type == TokenType.Or)
+            if (_logical.opp.type == TokenType.Or)
             {
                 if (IsTrue(left)) return left;
             }
@@ -332,7 +339,7 @@ namespace LoxLanguage
         {
             object value = Evaluate(_print.expression);
             string output = Stringify(value);
-             Console.WriteLine(output);
+            Console.WriteLine(output);
             return null;
         }
 
@@ -355,10 +362,16 @@ namespace LoxLanguage
 
         public object Visit(Stmt.While _while)
         {
-
-            while(IsTrue(Evaluate(_while.condition)))
+            try
             {
-                Execute(_while.body);
+                while (IsTrue(Evaluate(_while.condition)))
+                {
+                    Execute(_while.body);
+                }
+            }
+            catch (BreakException)
+            {
+                // Do nothing 
             }
             return null;
         }
@@ -366,6 +379,11 @@ namespace LoxLanguage
         public object Visit(Expr.Variable _variable)
         {
             return m_Enviroment.Get(_variable.name);
+        }
+
+        public object Visit(Stmt.Break _break)
+        {
+            throw new BreakException();
         }
     }
 }

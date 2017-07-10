@@ -12,6 +12,7 @@
 	string[] KEYWORDS = new string[]
 		{
 			"And",
+			"Break",
 			"Class",
 			"Else",
 			"False",
@@ -26,7 +27,7 @@
 			"Super",
 			"This",
 			"Var",
-			"While"
+			"While",
         };
 
 #>

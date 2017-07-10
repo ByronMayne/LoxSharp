@@ -15,6 +15,7 @@ namespace LoxLanguage
             T Visit(Return _return);
             T Visit(Var _var);
             T Visit(While _while);
+            T Visit(Break _break);
 		}
  
         public class Block : Stmt
@@ -162,6 +163,19 @@ namespace LoxLanguage
             {
                 this.condition = condition;
                 this.body = body;
+            }
+             
+            public override T Accept<T>(IVisitor<T> visitor)
+            {
+                return visitor.Visit(this);
+            }
+        }
+
+        public class Break : Stmt
+        {
+             
+            public Break()
+            {
             }
              
             public override T Accept<T>(IVisitor<T> visitor)

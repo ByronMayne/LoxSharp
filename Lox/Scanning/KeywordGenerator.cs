@@ -9,6 +9,7 @@ namespace LoxLanguage
 		private static readonly Dictionary<string, TokenType> MAP;
 
 		public const string AND = "and";
+		public const string BREAK = "break";
 		public const string CLASS = "class";
 		public const string ELSE = "else";
 		public const string FALSE = "false";
@@ -33,6 +34,7 @@ namespace LoxLanguage
 		{
 			MAP = new Dictionary<string, TokenType>();
 			MAP[AND] = TokenType.And;
+			MAP[BREAK] = TokenType.Break;
 			MAP[CLASS] = TokenType.Class;
 			MAP[ELSE] = TokenType.Else;
 			MAP[FALSE] = TokenType.False;

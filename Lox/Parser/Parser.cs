@@ -8,6 +8,7 @@ namespace LoxLanguage
     {
         private IList<Token> m_Tokens;
         private int m_Current;
+        private int m_LoopDepth = 0;
         private IErrorHandler m_ErrorHandler;
 
         /// <summary>
@@ -29,7 +30,7 @@ namespace LoxLanguage
         public List<Stmt> Parse()
         {
             List<Stmt> statements = new List<Stmt>();
-            while(!IsAtEnd())
+            while (!IsAtEnd())
             {
                 statements.Add(Declaration());
             }
@@ -43,9 +44,9 @@ namespace LoxLanguage
             {
                 if (Match(TokenType.Var)) return VarDeclartion();
 
-                return Statement(); 
+                return Statement();
             }
-            catch(ParserException e)
+            catch (ParserException e)
             {
                 Synchronize();
                 return null;
@@ -57,9 +58,9 @@ namespace LoxLanguage
             Token name = Consume(TokenType.Identifier, "Expect variable name.");
 
             Expr initializer = null;
-            if(Match(TokenType.Equal))
+            if (Match(TokenType.Equal))
             {
-                initializer = Expression(); 
+                initializer = Expression();
             }
 
             Consume(TokenType.Semicolon, "Expect ';' after variable declaration.");
@@ -68,6 +69,8 @@ namespace LoxLanguage
 
         private Stmt Statement()
         {
+            if (Match(TokenType.For)) return ForStatement();
+            if (Match(TokenType.Break)) return BreakStatement();
             if (Match(TokenType.If)) return IfStatement();
             if (Match(TokenType.Print)) return PrintStatement();
             if (Match(TokenType.While)) return WhileStatement();
@@ -85,12 +88,12 @@ namespace LoxLanguage
         {
             Expr expr = Or();
 
-            if(Match(TokenType.Equal))
+            if (Match(TokenType.Equal))
             {
                 Token equal = Previous();
-                Expr value = Assignment(); 
+                Expr value = Assignment();
 
-                if(expr is Expr.Variable)
+                if (expr is Expr.Variable)
                 {
                     Token name = ((Expr.Variable)expr).name;
                     return new Expr.Assign(name, value);
@@ -104,19 +107,19 @@ namespace LoxLanguage
         {
             Expr expr = And();
 
-            while(Match(TokenType.Or))
+            while (Match(TokenType.Or))
             {
                 Token @operator = Previous();
                 Expr right = And();
-                expr = new Expr.Logical(expr, @operator, right); 
+                expr = new Expr.Logical(expr, @operator, right);
             }
-            return expr; 
+            return expr;
         }
 
         private Expr And()
         {
             Expr expr = Equality();
-            while(Match(TokenType.And))
+            while (Match(TokenType.And))
             {
                 Token @operator = Previous();
                 Expr right = Equality();
@@ -130,6 +133,89 @@ namespace LoxLanguage
             Expr value = Expression();
             Consume(TokenType.Semicolon, "Expect ';' after value.");
             return new Stmt.Print(value);
+        }
+
+        private Stmt ForStatement()
+        {
+            Consume(TokenType.LeftParen, "Expect '(' after 'for'.");
+
+            Stmt initializer;
+            if (Match(TokenType.Semicolon))
+            {
+                // None is defined
+                initializer = null;
+            }
+            else if (Match(TokenType.Var))
+            {
+                initializer = VarDeclartion();
+            }
+            else
+            {
+                initializer = ExpressionStatement();
+            }
+
+            Expr condition = null;
+            if (!Check(TokenType.Semicolon))
+            {
+                condition = Expression();
+            }
+            Consume(TokenType.Semicolon, "Expect ';' after loop condition");
+
+            Expr increment = null;
+            if (!Check(TokenType.RightParen))
+            {
+                increment = Expression();
+            }
+            Consume(TokenType.RightParen, "Expect ')' after for clauses.");
+
+            Exception exception = null;
+            try
+            {
+                m_LoopDepth++;
+                Stmt body = Statement();
+
+                if (increment != null)
+                {
+                    Stmt.Expression expression = new Stmt.Expression(increment);
+                    List<Stmt> content = new List<Stmt>() { body, expression };
+                    body = new Stmt.Block(content);
+                }
+
+                if (condition == null)
+                {
+                    condition = new Expr.Literal(true);
+                }
+
+                body = new Stmt.While(condition, body);
+
+                if (initializer != null)
+                {
+                    List<Stmt> content = new List<Stmt>() { initializer, body };
+                    body = new Stmt.Block(content);
+                }
+
+                return body;
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+            finally
+            {
+                m_LoopDepth--;
+            }
+
+            throw exception;
+        }
+
+        public Stmt BreakStatement()
+        {
+            if (m_LoopDepth == 0)
+            {
+                Error(Previous(), "Must be inside a loop to use 'break'");
+            }
+            Consume(TokenType.Semicolon, "Expect ';' after 'break'.");
+            return new Stmt.Break();
         }
 
         private Stmt IfStatement()
@@ -147,21 +233,35 @@ namespace LoxLanguage
             return new Stmt.If(condition, thenBranch, elseBranch);
         }
 
+
         private Stmt WhileStatement()
         {
             Consume(TokenType.LeftParen, "Expect '(' after 'while'.");
             Expr condition = Expression();
             Consume(TokenType.RightParen, "Expect ')' after condition.");
-            Stmt body = Statement();
-
-            return new Stmt.While(condition, body);
+            Exception exception = null;
+            try
+            {
+                m_LoopDepth++;
+                Stmt body = Statement();
+                return new Stmt.While(condition, body);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+            finally
+            {
+                m_LoopDepth--;
+            }
+            throw exception;
         }
 
         private List<Stmt> Block()
         {
             List<Stmt> statements = new List<Stmt>();
 
-            while(!Check(TokenType.RightBrace) && !IsAtEnd())
+            while (!Check(TokenType.RightBrace) && !IsAtEnd())
             {
                 statements.Add(Declaration());
             }
@@ -358,7 +458,7 @@ namespace LoxLanguage
                 return new Expr.Literal(Previous().literal);
             }
 
-            if(Match(TokenType.Identifier))
+            if (Match(TokenType.Identifier))
             {
                 return new Expr.Variable(Previous());
             }
@@ -392,7 +492,7 @@ namespace LoxLanguage
                 return null;
             }
 
-            if(Match(TokenType.Slash, TokenType.Star, TokenType.Modulus))
+            if (Match(TokenType.Slash, TokenType.Star, TokenType.Modulus))
             {
                 Error(Previous(), "Missing left-hand operand.");
                 Factor();
