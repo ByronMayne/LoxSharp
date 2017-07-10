@@ -1,21 +1,8 @@
-﻿
-print "-= 8.5.2 Block syntax and semantics =-";
-var a = "global a";
-var b = "global b";
-var c = "global c";
+﻿for(var i = 0; i < 10; i++)
 {
-  var a = "outer a";
-  var b = "outer b";
-  {
-    var a = "inner a";
-    print a;
-    print b;
-    print c;
-  }
-  print a;
-  print b;
-  print c;
+	if(i > 5)
+	{
+		break;
+	}
+	print i;
 }
-print a;
-print b;
-print c;
