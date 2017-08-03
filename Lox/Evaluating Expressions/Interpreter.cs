@@ -352,7 +352,9 @@ namespace LoxLanguage
 
         public object Visit(Stmt.Function _function)
         {
-            throw new NotImplementedException();
+            LoxFunction function = new LoxFunction(_function);
+            m_Enviroment.Define(_function.name.lexeme, function);
+            return null;
         }
 
         public object Visit(Stmt.If _if)
