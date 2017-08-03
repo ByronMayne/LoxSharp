@@ -1,11 +1,12 @@
-﻿using System;
+﻿using LoxLanguage.Exceptions;
+using System;
 using System.Collections.Generic;
 
 namespace LoxLanguage
 {
     public class LoxFunction : ILoxCallable
     {
-        private Stmt.Function declaration; 
+        private Stmt.Function declaration;
 
         public int arity
         {
@@ -18,11 +19,18 @@ namespace LoxLanguage
         public object Call(Interpreter interpreter, IList<object> arguements)
         {
             Environment environment = new Environment(interpreter.globals);
-            for(int i = 0; i < declaration.parameters.Count; i++)
+            for (int i = 0; i < declaration.parameters.Count; i++)
             {
                 environment.Define(declaration.parameters[i].lexeme, arguements[i]);
             }
-            interpreter.ExecuteBlock(declaration.body, environment);
+            try
+            {
+                interpreter.ExecuteBlock(declaration.body, environment);
+            }
+            catch(Return returnValue)
+            {
+                return returnValue.value;
+            }
             return null;
         }
 

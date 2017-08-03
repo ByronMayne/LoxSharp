@@ -33,7 +33,7 @@ namespace LoxLanguage
 
             if (m_Enclosing != null) return m_Enclosing.Get(name); 
 
-            throw new RuntimeError(name, "Undefined variable '" + name.lexeme + ".");
+            throw new RuntimeError(name, "Undefined variable " + name.lexeme + ".");
         }
 
         public void Assign(Token name, object value)
@@ -50,7 +50,7 @@ namespace LoxLanguage
                 return;
             }
 
-            throw new RuntimeError(name, "Undefined variable '" + name.lexeme + "'.");
+            throw new RuntimeError(name, "Undefined variable " + name.lexeme + "'.");
         }
     }
 }

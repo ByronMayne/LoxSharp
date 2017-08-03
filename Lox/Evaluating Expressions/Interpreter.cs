@@ -17,8 +17,8 @@ namespace LoxLanguage
 
         public Interpreter(IErrorHandler errorHandler)
         {
-            m_Enviroment = new Environment();
             m_Globals = new Environment();
+            m_Enviroment = m_Globals;
             m_ErrorHandler = errorHandler;
             DefineNativeFunctions();
         }
@@ -381,7 +381,13 @@ namespace LoxLanguage
 
         public object Visit(Stmt.Return _return)
         {
-            throw new NotImplementedException();
+            object value = null;
+            if(_return.value != null)
+            {
+                value = Evaluate(_return.value);
+            }
+
+            throw new Return(value);
         }
 
         public object Visit(Stmt.Var _var)
