@@ -266,7 +266,13 @@ namespace LoxLanguage
             {
                 arguments[i] = Evaluate(_call.arguments[i]);
             }
-            ILoxCallable function = (ILoxCallable)callee;
+
+            ILoxCallable function = callee as ILoxCallable;
+
+            if(callee == null)
+            {
+                throw new RuntimeError(_call.paren, "Can only call functions on classes");
+            }
             return function.Call(this, arguments);
         }
 
