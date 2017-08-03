@@ -12,6 +12,12 @@ namespace LoxLanguage
         {
             m_Enviroment = new Environment();
             m_ErrorHandler = errorHandler;
+            DefineNativeFunctions();
+        }
+
+        private void DefineNativeFunctions()
+        {
+            ILoxCallable clock = new NativeFunction_Clock();
         }
 
         public void Interpret(List<Stmt> statements)
