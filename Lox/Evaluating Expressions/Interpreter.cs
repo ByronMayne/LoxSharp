@@ -260,7 +260,14 @@ namespace LoxLanguage
 
         public object Visit(Expr.Call _call)
         {
-            throw new NotImplementedException();
+            object callee = Evaluate(_call.callee);
+            object[] arguments = new object[_call.arguments.Count];
+            for(int i = 0; i < _call.arguments.Count; i++)
+            {
+                arguments[i] = Evaluate(_call.arguments[i]);
+            }
+            ILoxCallable function = (ILoxCallable)callee;
+            return function.Call(this, arguments);
         }
 
         public object Visit(Expr.Get _get)
