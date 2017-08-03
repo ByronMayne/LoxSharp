@@ -433,7 +433,26 @@ namespace LoxLanguage
                 Expr right = Unary();
                 return new Expr.Prefix(@operator, right);
             }
-            return Postfix();
+            return Call();
+        }
+
+        private Expr Call()
+        {
+            Expr expr = Postfix();
+
+            while(true)
+            {
+                if(Match(TokenType.LeftParen))
+                {
+                    expr = FinishCall(expr);
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return expr;
         }
 
         private Expr Postfix()
@@ -500,6 +519,23 @@ namespace LoxLanguage
             }
 
             throw Error(Peek(), "Expected expression.");
+        }
+        
+        private Expr FinishCall(Expr callee)
+        {
+            List<Expr> arguments = new List<Expr>();
+            if(!Check(TokenType.RightParen))
+            {
+                do
+                {
+                    arguments.Add(Expression());
+                }
+                while (Match(TokenType.Comma));
+            }
+
+            Token paren = Consume(TokenType.RightParen, "Expect ')' after arguments.");
+
+            return new Expr.Call(callee, paren, arguments);
         }
 
         private Token Consume(TokenType type, string message)
