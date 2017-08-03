@@ -7,10 +7,17 @@ namespace LoxLanguage
     {
         private IErrorHandler m_ErrorHandler;
         private Environment m_Enviroment;
+        private Environment m_Globals;
+
+        public Environment globals
+        {
+            get { return m_Globals; }
+        }
 
         public Interpreter(IErrorHandler errorHandler)
         {
             m_Enviroment = new Environment();
+            m_Globals = new Environment();
             m_ErrorHandler = errorHandler;
             DefineNativeFunctions();
         }
@@ -18,6 +25,7 @@ namespace LoxLanguage
         private void DefineNativeFunctions()
         {
             ILoxCallable clock = new NativeFunction_Clock();
+            m_Globals.Define("clock", clock);
         }
 
         public void Interpret(List<Stmt> statements)
@@ -197,7 +205,7 @@ namespace LoxLanguage
         /// </summary>
         /// <param name="statements">The list of statements that we want to run in our block.</param>
         /// <param name="environment">The environment we store their local variables in.</param>
-        private void ExecuteBlock(List<Stmt> statements, Environment environment)
+        public void ExecuteBlock(List<Stmt> statements, Environment environment)
         {
             Environment previous = m_Enviroment;
             try
