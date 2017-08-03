@@ -48,6 +48,8 @@
     <Compile Include="Evaluating Expressions\Interpreter.cs" />
     <Compile Include="Evaluating Expressions\LoxFunction.cs" />
     <Compile Include="Evaluating Expressions\Native Functions\NativeFunction_Clock.cs" />
+    <Compile Include="Exceptions\ReturnException.cs" />
+    <Compile Include="Exceptions\BreakException.cs" />
     <Compile Include="Exceptions\LoxExceptions.cs" />
     <Compile Include="Parser\Parser.cs" />
     <Compile Include="Scanning\KeywordGenerator.cs">

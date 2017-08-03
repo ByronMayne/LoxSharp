@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LoxLanguage.Exceptions;
+using System;
 using System.Collections.Generic;
 
 namespace LoxLanguage
@@ -404,7 +405,7 @@ namespace LoxLanguage
                     Execute(_while.body);
                 }
             }
-            catch (BreakException)
+            catch (Break)
             {
                 // Do nothing 
             }
@@ -418,7 +419,7 @@ namespace LoxLanguage
 
         public object Visit(Stmt.Break _break)
         {
-            throw new BreakException();
+            throw new Break();
         }
     }
 }
