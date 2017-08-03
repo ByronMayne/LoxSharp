@@ -6,6 +6,7 @@ namespace LoxLanguage
 {
     public class Parser
     {
+        private const int FUNCTION_MAX_ARG_COUNT = 32;
         private IList<Token> m_Tokens;
         private int m_Current;
         private int m_LoopDepth = 0;
@@ -529,6 +530,11 @@ namespace LoxLanguage
                 do
                 {
                     arguments.Add(Expression());
+
+                    if (arguments.Count > FUNCTION_MAX_ARG_COUNT)
+                    {
+                        Error(Peek(), "Cannon have more then " + FUNCTION_MAX_ARG_COUNT + " arguments for a function");
+                    }
                 }
                 while (Match(TokenType.Comma));
             }
