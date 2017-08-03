@@ -44,6 +44,7 @@ namespace LoxLanguage
             try
             {
                 if (Match(TokenType.Var)) return VarDeclartion();
+                if (Match(TokenType.Fun)) return Function("function");
 
                 return Statement();
             }
@@ -52,6 +53,31 @@ namespace LoxLanguage
                 Synchronize();
                 return null;
             }
+        }
+
+        private Stmt Function(string kind)
+        {
+            Token name = Consume(TokenType.Identifier, "Expect " + kind + " name.");
+            Consume(TokenType.LeftParen, "Expect '(' after " + kind + " name.");
+            List<Token> parameters = new List<Token>();
+            if(!Check(TokenType.RightParen))
+            {
+                do
+                {
+                    if (parameters.Count >= FUNCTION_MAX_ARG_COUNT)
+                    {
+                        Error(Peek(), "Cannot have more then " + FUNCTION_MAX_ARG_COUNT + " parameters.");
+                    }
+
+                    parameters.Add(Consume(TokenType.Identifier, "Expect parameter name."));
+                }
+                while (Match(TokenType.Comma));
+            }
+            Consume(TokenType.RightParen, "Expect ')' after parameters.");
+
+            Consume(TokenType.LeftBrace, "Expect '{' before " + kind + " body.");
+            List<Stmt> body = Block();
+            return new Stmt.Function(name, parameters, body);
         }
 
         private Stmt VarDeclartion()
