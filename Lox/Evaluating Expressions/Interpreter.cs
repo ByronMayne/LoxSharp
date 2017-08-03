@@ -353,7 +353,7 @@ namespace LoxLanguage
 
         public object Visit(Stmt.Function _function)
         {
-            LoxFunction function = new LoxFunction(_function);
+            LoxFunction function = new LoxFunction(_function, m_Enviroment);
             m_Enviroment.Define(_function.name.lexeme, function);
             return null;
         }
