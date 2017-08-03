@@ -273,6 +273,12 @@ namespace LoxLanguage
             {
                 throw new RuntimeError(_call.paren, "Can only call functions on classes");
             }
+
+            if (arguments.Length != function.arity)
+            {
+                throw new RuntimeError(_call.paren, "Expected " + function.arity + " arguments but got " + arguments.Length + ".");
+            }
+
             return function.Call(this, arguments);
         }
 
