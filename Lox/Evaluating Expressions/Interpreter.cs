@@ -276,7 +276,15 @@ namespace LoxLanguage
         public object Visit(Expr.Assign _assign)
         {
             object value = Evaluate(_assign.value);
-            m_Enviroment.Assign(_assign.name, value);
+            if (m_Locals.ContainsKey(_assign))
+            {
+                int distance = m_Locals[_assign];
+                m_Enviroment.AssignAt(distance, _assign.name, value);
+            }
+            else
+            {
+                m_Globals.Assign(_assign.name, value);
+            }
             return value;
         }
 
@@ -428,7 +436,7 @@ namespace LoxLanguage
         public object Visit(Expr.Variable _variable)
         {
             return LookupVarable(_variable.name, _variable);
-       
+
         }
 
         private object LookupVarable(Token name, Expr.Variable _variable)
@@ -440,7 +448,7 @@ namespace LoxLanguage
             }
             else
             {
-                return m_Globals.Get(name); 
+                return m_Globals.Get(name);
             }
         }
 

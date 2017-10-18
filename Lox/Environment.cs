@@ -62,5 +62,15 @@ namespace LoxLanguage
             }
             return environment.m_Values[name];
         }
+
+        internal void AssignAt(int distance, Token name, object value)
+        {
+            Environment environment = this;
+            for(int i = 0; i < distance; i++)
+            {
+                environment = environment.m_Enclosing;
+            }
+            environment.m_Values[name.lexeme] = value;
+        }
     }
 }
