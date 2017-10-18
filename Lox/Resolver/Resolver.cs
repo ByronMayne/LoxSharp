@@ -3,16 +3,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace LoxLanguage
 {
+    public class Scope : Dictionary<string, bool>
+    { }
+
+
     public class Resolver : Expr.IVisitor<object>, Stmt.IVisitor<object>
     {
-        private Interpreter m_Iterpreter; 
+        private Interpreter m_Iterpreter;
+        private Stack<Scope> m_Scopes;
 
         public Resolver(Interpreter interpreter)
         {
             m_Iterpreter = interpreter;
+            m_Scopes = new Stack<Scope>(); 
+        }
+
+        private void BeginScope()
+        {
+            Scope scope = new Scope(); 
+            m_Scopes.Push(scope);
+        }
+
+        private void EndScope()
+        {
+            m_Scopes.Pop();
+        }
+
+        private void Resolve(List<Stmt> statements)
+        {
+            for(int i = 0; i < statements.Count; i++)
+            {
+                Resolve(statements[i]);
+            }
+        }
+
+        private void Resolve(Stmt stmt)
+        {
+            stmt.Accept(this);
         }
 
         public object Visit(Expr.Call _call)
@@ -47,8 +76,13 @@ namespace LoxLanguage
 
         public object Visit(Stmt.Block _block)
         {
-            throw new NotImplementedException();
+            BeginScope();
+            Resolve(_block.statements);
+            EndScope();
+            return null;
         }
+
+
 
         public object Visit(Stmt.Expression _expression)
         {
