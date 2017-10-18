@@ -9,6 +9,7 @@ namespace LoxLanguage
         private IErrorHandler m_ErrorHandler;
         private Environment m_Enviroment;
         private Environment m_Globals;
+        private Dictionary<Expr, int> m_Locals;
 
         public Environment globals
         {
@@ -19,6 +20,7 @@ namespace LoxLanguage
         {
             m_Globals = new Environment();
             m_Enviroment = m_Globals;
+            m_Locals = new Dictionary<Expr, int>();
             m_ErrorHandler = errorHandler;
             DefineNativeFunctions();
         }
@@ -161,9 +163,9 @@ namespace LoxLanguage
             return null;
         }
 
-        public void Resolve(Expr expr, int v)
+        public void Resolve(Expr expr, int depth)
         {
-            throw new NotImplementedException();
+            m_Locals[expr] = depth;
         }
 
         /// <summary>
