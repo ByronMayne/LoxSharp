@@ -1,0 +1,138 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace LoxLanguage
+{
+    public class Resolver : Expr.IVisitor<object>, Stmt.IVisitor<object>
+    {
+        private Interpreter m_Iterpreter; 
+
+        public Resolver(Interpreter interpreter)
+        {
+            m_Iterpreter = interpreter;
+        }
+
+        public object Visit(Expr.Call _call)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Expr.Grouping _grouping)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Expr.Logical _logical)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Expr.Super _super)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Expr.Prefix _prefix)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Expr.Conditional _conditional)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Stmt.Block _block)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Stmt.Expression _expression)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Stmt.If _if)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Stmt.Return _return)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Stmt.While _while)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Stmt.Break _break)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Stmt.Var _var)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Stmt.Print _print)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Stmt.Function _function)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Stmt.Class _class)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Expr.Variable _variable)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Expr.Postfix _postfix)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Expr.This _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Expr.Set _set)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Expr.Literal _literal)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Expr.Get _get)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Expr.Binary _binary)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Visit(Expr.Assign _assign)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

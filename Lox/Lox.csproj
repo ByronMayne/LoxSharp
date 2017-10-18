@@ -52,6 +52,7 @@
     <Compile Include="Exceptions\BreakException.cs" />
     <Compile Include="Exceptions\LoxExceptions.cs" />
     <Compile Include="Parser\Parser.cs" />
+    <Compile Include="Resolver\Resolver.cs" />
     <Compile Include="Scanning\KeywordGenerator.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
