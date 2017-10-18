@@ -119,16 +119,23 @@ namespace LoxLanguage
 
         public object Visit(Expr.Call _call)
         {
+            Resolve(_call.callee);
+            foreach(Expr argument in _call.arguments)
+            {
+                Resolve(argument); 
+            }
             return null;
         }
 
         public object Visit(Expr.Grouping _grouping)
         {
+            Resolve(_grouping.expression);
             return null;
         }
 
         public object Visit(Expr.Logical _logical)
         {
+            Resolve(_logical.right); 
             return null;
         }
 
@@ -183,6 +190,8 @@ namespace LoxLanguage
 
         public object Visit(Stmt.While _while)
         {
+            Resolve(_while.condition);
+            Resolve(_while.body);
             return null;
         }
 
@@ -268,6 +277,8 @@ namespace LoxLanguage
 
         public object Visit(Expr.Binary _binary)
         {
+            Resolve(_binary.lhs);
+            Resolve(_binary.rhs);
             return null;
         }
 
