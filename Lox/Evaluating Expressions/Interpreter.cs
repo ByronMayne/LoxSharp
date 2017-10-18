@@ -161,7 +161,7 @@ namespace LoxLanguage
             return null;
         }
 
-        public void Resolve(Expr.Variable _variable, int v)
+        public void Resolve(Expr expr, int v)
         {
             throw new NotImplementedException();
         }

@@ -60,14 +60,27 @@ namespace LoxLanguage
             }
         }
 
+        private void Resolve(Expr expr)
+        {
+            expr.Accept(this);
+        }
+
         private void Resolve(Stmt stmt)
         {
             stmt.Accept(this);
         }
 
-        private void Resolve(Expr initializer)
+        private void ResolveLocal(Expr _variable, Token name)
         {
-            throw new NotImplementedException();
+            for (int i = m_Scopes.Count; i >= 0; i--)
+            {
+                Scope scope = m_Scopes[i];
+                if (scope.ContainsKey(name.lexeme))
+                {
+                    m_Iterpreter.Resolve(_variable, m_Scopes.Count - 1 - i);
+                    return;
+                }
+            }
         }
 
         private void Define(Token name)
@@ -92,32 +105,32 @@ namespace LoxLanguage
 
         public object Visit(Expr.Call _call)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public object Visit(Expr.Grouping _grouping)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public object Visit(Expr.Logical _logical)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public object Visit(Expr.Super _super)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public object Visit(Expr.Prefix _prefix)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public object Visit(Expr.Conditional _conditional)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public object Visit(Stmt.Block _block)
@@ -128,59 +141,55 @@ namespace LoxLanguage
             return null;
         }
 
-
-
         public object Visit(Stmt.Expression _expression)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public object Visit(Stmt.If _if)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public object Visit(Stmt.Return _return)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public object Visit(Stmt.While _while)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public object Visit(Stmt.Break _break)
         {
-            throw new NotImplementedException();
-        }
-
-        public object Visit(Stmt.Var _var)
-        {
-            Declare(_var.name);
-            if(_var.initializer != null)
-            {
-                Resolve(_var.initializer);
-            }
-            Define(_var.name);
             return null;
         }
 
-
+        public object Visit(Stmt.Var stmt)
+        {
+            Declare(stmt.name);
+            if(stmt.initializer != null)
+            {
+                Resolve(stmt.initializer);
+            }
+            Define(stmt.name);
+            return null;
+        }
 
         public object Visit(Stmt.Print _print)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public object Visit(Stmt.Function _function)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public object Visit(Stmt.Class _class)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public object Visit(Expr.Variable _variable)
@@ -201,52 +210,41 @@ namespace LoxLanguage
             return null;
         }
 
-        private void ResolveLocal(Expr.Variable _variable, Token name)
-        {
-            for(int i = m_Scopes.Count; i  >= 0; i--)
-            {
-                Scope scope = m_Scopes[i];
-                if(scope.ContainsKey(name.lexeme))
-                {
-                    m_Iterpreter.Resolve(_variable, m_Scopes.Count - 1 - i);
-                    return;
-                }
-            }
-        }
-
         public object Visit(Expr.Postfix _postfix)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public object Visit(Expr.This _this)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public object Visit(Expr.Set _set)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public object Visit(Expr.Literal _literal)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public object Visit(Expr.Get _get)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public object Visit(Expr.Binary _binary)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public object Visit(Expr.Assign _assign)
         {
-            throw new NotImplementedException();
+            Resolve(_assign.value);
+            ResolveLocal(_assign, _assign.name);
+            return null; 
         }
     }
 }
