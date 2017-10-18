@@ -44,6 +44,31 @@ namespace LoxLanguage
             stmt.Accept(this);
         }
 
+        private void Resolve(Expr initializer)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Define(Token name)
+        {
+            if(m_Scopes.Count == 0)
+            {
+                return;
+            }
+            Scope scope = m_Scopes.Peek();
+            scope[name.lexeme] = true;
+        }
+
+        private void Declare(Token name)
+        {
+            if(m_Scopes.Count == 0)
+            {
+                return;
+            }
+            Scope scope = m_Scopes.Peek();
+            scope[name.lexeme] = false; 
+        }
+
         public object Visit(Expr.Call _call)
         {
             throw new NotImplementedException();
@@ -111,8 +136,16 @@ namespace LoxLanguage
 
         public object Visit(Stmt.Var _var)
         {
-            throw new NotImplementedException();
+            Declare(_var.name);
+            if(_var.initializer != null)
+            {
+                Resolve(_var.initializer);
+            }
+            Define(_var.name);
+            return null;
         }
+
+
 
         public object Visit(Stmt.Print _print)
         {
