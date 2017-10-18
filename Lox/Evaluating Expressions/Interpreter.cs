@@ -427,7 +427,21 @@ namespace LoxLanguage
 
         public object Visit(Expr.Variable _variable)
         {
-            return m_Enviroment.Get(_variable.name);
+            return LookupVarable(_variable.name, _variable);
+       
+        }
+
+        private object LookupVarable(Token name, Expr.Variable _variable)
+        {
+            if (m_Locals.ContainsKey(_variable))
+            {
+                int distance = m_Locals[_variable];
+                return m_Enviroment.GetAt(distance, name.lexeme);
+            }
+            else
+            {
+                return m_Globals.Get(name); 
+            }
         }
 
         public object Visit(Stmt.Break _break)

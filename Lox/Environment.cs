@@ -52,5 +52,15 @@ namespace LoxLanguage
 
             throw new RuntimeError(name, "Undefined variable " + name.lexeme + "'.");
         }
+
+        public object GetAt(int distance, string name)
+        {
+            Environment environment = this;
+            for (int i = 0; i < distance; i++)
+            {
+                environment = environment.m_Enclosing;
+            }
+            return environment.m_Values[name];
+        }
     }
 }
