@@ -161,6 +161,11 @@ namespace LoxLanguage
             return null;
         }
 
+        public void Resolve(Expr.Variable _variable, int v)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Checks if a value is true or not in Lox. Null is false and a boolean
         /// returns it's value. Everything else is true. 
@@ -277,14 +282,14 @@ namespace LoxLanguage
         {
             object callee = Evaluate(_call.callee);
             object[] arguments = new object[_call.arguments.Count];
-            for(int i = 0; i < _call.arguments.Count; i++)
+            for (int i = 0; i < _call.arguments.Count; i++)
             {
                 arguments[i] = Evaluate(_call.arguments[i]);
             }
 
             ILoxCallable function = callee as ILoxCallable;
 
-            if(callee == null)
+            if (callee == null)
             {
                 throw new RuntimeError(_call.paren, "Can only call functions on classes");
             }
@@ -382,7 +387,7 @@ namespace LoxLanguage
         public object Visit(Stmt.Return _return)
         {
             object value = null;
-            if(_return.value != null)
+            if (_return.value != null)
             {
                 value = Evaluate(_return.value);
             }

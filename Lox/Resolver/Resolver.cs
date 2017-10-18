@@ -6,18 +6,39 @@ using System.Threading.Tasks;
 namespace LoxLanguage
 {
     public class Scope : Dictionary<string, bool>
-    { }
+    {
+    }
 
+    public class ScopeStack : List<Scope>
+    {
+        public Scope Peek()
+        {
+            return this[0];
+        }
+
+
+        public void Pop()
+        {
+            RemoveAt(0);
+        }
+
+        public void Push(Scope scope)
+        {
+            Insert(0, scope);
+        }
+    }
 
     public class Resolver : Expr.IVisitor<object>, Stmt.IVisitor<object>
     {
         private Interpreter m_Iterpreter;
-        private Stack<Scope> m_Scopes;
+        private ScopeStack m_Scopes;
+        private IErrorHandler m_ErrorHandler;
 
-        public Resolver(Interpreter interpreter)
+        public Resolver(Interpreter interpreter, IErrorHandler errorHandler)
         {
             m_Iterpreter = interpreter;
-            m_Scopes = new Stack<Scope>(); 
+            m_ErrorHandler = errorHandler;
+            m_Scopes = new ScopeStack(); 
         }
 
         private void BeginScope()
@@ -164,7 +185,33 @@ namespace LoxLanguage
 
         public object Visit(Expr.Variable _variable)
         {
-            throw new NotImplementedException();
+            if(m_Scopes.Count == 0)
+            {
+                m_ErrorHandler.Error(_variable.name, "Cannot read local variable in its own initializer.");
+            }
+
+            Scope scope = m_Scopes.Peek();
+
+            if(!scope.ContainsKey(_variable.name.lexeme) || scope[_variable.name.lexeme] == false)
+            {
+                m_ErrorHandler.Error(_variable.name, "Cannot read local variable in its own initializer.");
+            }
+
+            ResolveLocal(_variable, _variable.name);
+            return null;
+        }
+
+        private void ResolveLocal(Expr.Variable _variable, Token name)
+        {
+            for(int i = m_Scopes.Count; i  >= 0; i--)
+            {
+                Scope scope = m_Scopes[i];
+                if(scope.ContainsKey(name.lexeme))
+                {
+                    m_Iterpreter.Resolve(_variable, m_Scopes.Count - 1 - i);
+                    return;
+                }
+            }
         }
 
         public object Visit(Expr.Postfix _postfix)
