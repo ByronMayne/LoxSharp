@@ -1,8 +1,10 @@
-﻿for(var i = 0; i < 10; i++)
+﻿var a = "global";
 {
-	if(i > 5)
-	{
-		break;
-	}
-	print i;
+  fun showA() {
+    print a;
+  }
+
+  showA();
+  var a = "block";
+  showA();
 }

@@ -114,6 +114,10 @@ namespace LoxLanguage
                 return;
             }
             Scope scope = m_Scopes.Peek();
+            if(scope.ContainsKey(name.lexeme))
+            {
+                m_ErrorHandler.Error(name, "Variable with this name already declared in this scope."); 
+            }
             scope[name.lexeme] = false;
         }
 
