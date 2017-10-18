@@ -38,12 +38,12 @@ namespace LoxLanguage
         {
             m_Iterpreter = interpreter;
             m_ErrorHandler = errorHandler;
-            m_Scopes = new ScopeStack(); 
+            m_Scopes = new ScopeStack();
         }
 
         private void BeginScope()
         {
-            Scope scope = new Scope(); 
+            Scope scope = new Scope();
             m_Scopes.Push(scope);
         }
 
@@ -54,7 +54,7 @@ namespace LoxLanguage
 
         private void Resolve(List<Stmt> statements)
         {
-            for(int i = 0; i < statements.Count; i++)
+            for (int i = 0; i < statements.Count; i++)
             {
                 Resolve(statements[i]);
             }
@@ -83,9 +83,23 @@ namespace LoxLanguage
             }
         }
 
+        private void ResolveFunction(Stmt.Function stmt, TokenType fun)
+        {
+            BeginScope();
+            {
+                foreach(Token paramter in stmt.parameters)
+                {
+                    Declare(paramter);
+                    Define(paramter);
+                }
+                Resolve(stmt.body);
+            }
+            EndScope();
+        }
+
         private void Define(Token name)
         {
-            if(m_Scopes.Count == 0)
+            if (m_Scopes.Count == 0)
             {
                 return;
             }
@@ -95,12 +109,12 @@ namespace LoxLanguage
 
         private void Declare(Token name)
         {
-            if(m_Scopes.Count == 0)
+            if (m_Scopes.Count == 0)
             {
                 return;
             }
             Scope scope = m_Scopes.Peek();
-            scope[name.lexeme] = false; 
+            scope[name.lexeme] = false;
         }
 
         public object Visit(Expr.Call _call)
@@ -143,16 +157,27 @@ namespace LoxLanguage
 
         public object Visit(Stmt.Expression _expression)
         {
+            Resolve(_expression.expression);
             return null;
         }
 
         public object Visit(Stmt.If _if)
         {
+            Resolve(_if.condition);
+            Resolve(_if.thenBranch);
+            if(_if.elseBranch != null)
+            {
+                Resolve(_if.elseBranch); 
+            }
             return null;
         }
 
         public object Visit(Stmt.Return _return)
         {
+            if(_return.value != null)
+            {
+                Resolve(_return.value);
+            }
             return null;
         }
 
@@ -169,7 +194,7 @@ namespace LoxLanguage
         public object Visit(Stmt.Var stmt)
         {
             Declare(stmt.name);
-            if(stmt.initializer != null)
+            if (stmt.initializer != null)
             {
                 Resolve(stmt.initializer);
             }
@@ -179,13 +204,19 @@ namespace LoxLanguage
 
         public object Visit(Stmt.Print _print)
         {
+            Resolve(_print.expression);
             return null;
         }
 
-        public object Visit(Stmt.Function _function)
+        public object Visit(Stmt.Function stmt)
         {
+            Declare(stmt.name);
+            Define(stmt.name);
+            ResolveFunction(stmt, TokenType.Fun);
             return null;
         }
+
+
 
         public object Visit(Stmt.Class _class)
         {
@@ -194,14 +225,14 @@ namespace LoxLanguage
 
         public object Visit(Expr.Variable _variable)
         {
-            if(m_Scopes.Count == 0)
+            if (m_Scopes.Count == 0)
             {
                 m_ErrorHandler.Error(_variable.name, "Cannot read local variable in its own initializer.");
             }
 
             Scope scope = m_Scopes.Peek();
 
-            if(!scope.ContainsKey(_variable.name.lexeme) || scope[_variable.name.lexeme] == false)
+            if (!scope.ContainsKey(_variable.name.lexeme) || scope[_variable.name.lexeme] == false)
             {
                 m_ErrorHandler.Error(_variable.name, "Cannot read local variable in its own initializer.");
             }
@@ -244,7 +275,7 @@ namespace LoxLanguage
         {
             Resolve(_assign.value);
             ResolveLocal(_assign, _assign.name);
-            return null; 
+            return null;
         }
     }
 }
