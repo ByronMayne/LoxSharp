@@ -1,6 +1,4 @@
-
-Lox/App\.config
-
-Lox/obj/
-
-Lox/bin/
+**/bin/**
+**/obj/**
+**.*.suo
+Lox/\.vs/Lox/v15/\.suo
