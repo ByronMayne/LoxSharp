@@ -13,6 +13,10 @@ namespace LoxLanguage
     {
         public Scope Peek()
         {
+            if(Count == 0)
+            {
+                return null;
+            }
             return this[0];
         }
 
@@ -52,7 +56,7 @@ namespace LoxLanguage
             m_Scopes.Pop();
         }
 
-        private void Resolve(List<Stmt> statements)
+        public void Resolve(List<Stmt> statements)
         {
             for (int i = 0; i < statements.Count; i++)
             {
@@ -72,7 +76,7 @@ namespace LoxLanguage
 
         private void ResolveLocal(Expr _variable, Token name)
         {
-            for (int i = m_Scopes.Count; i >= 0; i--)
+            for (int i = m_Scopes.Count -1; i >= 0; i--)
             {
                 Scope scope = m_Scopes[i];
                 if (scope.ContainsKey(name.lexeme))
@@ -238,14 +242,9 @@ namespace LoxLanguage
 
         public object Visit(Expr.Variable _variable)
         {
-            if (m_Scopes.Count == 0)
-            {
-                m_ErrorHandler.Error(_variable.name, "Cannot read local variable in its own initializer.");
-            }
-
             Scope scope = m_Scopes.Peek();
 
-            if (!scope.ContainsKey(_variable.name.lexeme) || scope[_variable.name.lexeme] == false)
+            if (scope != null && scope.ContainsKey(_variable.name.lexeme) && scope[_variable.name.lexeme] == false)
             {
                 m_ErrorHandler.Error(_variable.name, "Cannot read local variable in its own initializer.");
             }

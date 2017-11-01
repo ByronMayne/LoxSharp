@@ -99,8 +99,18 @@ namespace LoxLanguage
             List<Token> tokens = scanner.ScanTokens();
             // Create our parser
             Parser parser = new Parser(tokens, this);
+            // Escape if we had errors
+            if (m_HadError) return;
             // Start the parse process.
             List<Stmt> statements = parser.Parse();
+            // Escape if there were errors
+            if (m_HadError) return;
+            // Create our resolver
+            Resolver resolver = new Resolver(m_Interpreter, this);
+            // Start resolving
+            resolver.Resolve(statements);
+            // Escape if we had errors
+            if (m_HadError) return;
             // Start our interpreter
             m_Interpreter.Interpret(statements); 
         }
