@@ -1,4 +1,9 @@
-﻿var a = "global";
+﻿var apple = "Apple";
+var age = 10;
+print apple;
+print age;
+print apple + age;
+var a = "global";
 {
   fun showA() {
     print a;
@@ -7,4 +12,15 @@
   showA();
   var a = "block";
   showA();
+}
+var loops = 10;
+print "-= While Loop =- ";
+while(loops > 0)
+{
+	loops = loops - 1;
+	print "Loop " + loops;
+}
+print "-= For Loop =-";
+for(var i = 0; i < 10; i++)
+{
 }

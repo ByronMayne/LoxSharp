@@ -37,6 +37,13 @@ namespace LoxLanguage
         private Interpreter m_Iterpreter;
         private ScopeStack m_Scopes;
         private IErrorHandler m_ErrorHandler;
+        private FunctionType m_CurrentFunction = FunctionType.None;
+
+        private enum FunctionType
+        {
+            None,
+            Function
+        }
 
         public Resolver(Interpreter interpreter, IErrorHandler errorHandler)
         {
@@ -87,8 +94,10 @@ namespace LoxLanguage
             }
         }
 
-        private void ResolveFunction(Stmt.Function stmt, TokenType fun)
+        private void ResolveFunction(Stmt.Function stmt, FunctionType functionType)
         {
+            FunctionType enclosingFunction = m_CurrentFunction;
+            m_CurrentFunction = functionType;
             BeginScope();
             {
                 foreach(Token paramter in stmt.parameters)
@@ -99,6 +108,7 @@ namespace LoxLanguage
                 Resolve(stmt.body);
             }
             EndScope();
+            m_CurrentFunction = enclosingFunction;
         }
 
         private void Define(Token name)
@@ -189,7 +199,12 @@ namespace LoxLanguage
 
         public object Visit(Stmt.Return _return)
         {
-            if(_return.value != null)
+            if (m_CurrentFunction == FunctionType.None)
+            {
+                m_ErrorHandler.Error(_return.keyword, "Cannot return from top-level code.");
+            }
+
+            if (_return.value != null)
             {
                 Resolve(_return.value);
             }
@@ -229,7 +244,7 @@ namespace LoxLanguage
         {
             Declare(stmt.name);
             Define(stmt.name);
-            ResolveFunction(stmt, TokenType.Fun);
+            ResolveFunction(stmt, FunctionType.Function);
             return null;
         }
 
