@@ -1,5 +1,6 @@
 ﻿using LoxLanguage;
 using System;
+using System.IO;
 
 namespace LoxRunner
 {
@@ -7,7 +8,8 @@ namespace LoxRunner
     {
         static void Main(string[] args)
         {
-            Lox lox = new Lox(new string[] { "D://Repositories//LoxSharp//LoxRunner//Example.Lox" });
+            string loxScript = Directory.GetCurrentDirectory() + "/../../Example.Lox";
+            Lox lox = new Lox(new[] { loxScript });
             lox.Run();
             Console.ReadLine();
         }
